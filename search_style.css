@@ -4,6 +4,10 @@
     padding: 0;
 }
 
+body{
+    background-color: #beacd6;
+}
+
 h1{
     font-weight: 400;
     text-align: left;
@@ -27,7 +31,7 @@ h5{
 }
 
 .search-bar button{
-    background: white;
+    background:  #beacd6;
     color: black;
     border-radius: 20px;
     font-size: 24px;
@@ -44,6 +48,7 @@ h5{
     text-align: left;
     font-size: 24px;
     font-family: 'Orienta', sans-serif;
+    border-color: black;
 }
 .profile button{
     background: black;
