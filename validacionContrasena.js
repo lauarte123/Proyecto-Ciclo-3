@@ -16,9 +16,9 @@ function validar_formulario(){
         alert("Debes ingresar una clave con más de 8 caracteres");
         return false;
     }
-    formato de correo electrónico
+    //formato de correo electrónico
     var formatoCorreo = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-    si no es verdadero !correo.
+    //si no es verdadero !correo.
     if(!correo.value.match(formatoCorreo)){
         alert("Debes ingresar un correo electrónico válido");
         return false;
