@@ -4,20 +4,20 @@ app = Flask(__name__)
 
 @app.route("/principal")
 def principal():
-    return render_template(Cover.html)
+    return render_template("Cover.html")
 
 @app.route("/perfil")
 def principal():
-    return render_template(Profile.html)
+    return render_template("Profile.html")
 
 @app.route("/crear")
 def crear():
-    return render_template(Crear.html)
+    return render_template("Crear.html")
 
 @app.route("/modificar")
 def modificar():
-    return render_template(modifical.html)
+    return render_template("modificar.html")
 
 @app.route("/buscar")
 def buscar():
-    return render_template(Profile.html)
+    return render_template("search.html")
