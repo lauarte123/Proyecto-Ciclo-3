@@ -5,11 +5,11 @@ import utils
 app = Flask(__name__)
 
 #Activación de cuenta
-@app.route("/")
+@app.route("/principal", methods=('GET', 'POST'))
 def principal():
     if request.method == 'POST':
         username = request.form.get('usuario')
-        password = request.form['password']
+        password = request.form.get('password')
         email = request.form.get('correo')
 
         if not utils.isUsernameValid(username):
@@ -18,8 +18,8 @@ def principal():
         if not utils.isPasswordValid(password):
             return render_template('Cover.html')
         
-        if not utils.isEmailValid(email):
-            return render_template('Cover.html')
+        #if not utils.isEmailValid(email):
+            #return render_template('Cover.html')
 
         #El correo de donde la aplicación envía el correo
         yag = yagmail.SMTP('laarteaga@uninorte.edu.co','13uninorte31')
