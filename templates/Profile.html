@@ -22,7 +22,7 @@
         </div>
         <div class="contenedor">
             <!--<h2>Información de Usuario</h2> -->
-            <h1>Fulanito de Tal</h1>
+            <h1>{{ nombre }}</h1>
             <br/>
             <div>
                 <div>
@@ -31,8 +31,8 @@
                 <div>
                     <br/>
                     <!--<p class="der">Nombre: Fulanito de Tal</p>-->
-                    <p class="der">Correo: laura@detal.com</p>
-                    <p class="der">Fotos subidas: 3</p>
+                    <p class="der">Correo: {{ correo }}</p>
+                    <p class="der">Fotos subidas: {{ cantidad }}</p>
                     <p class="der">Cuenta creada el 01/12/2020</p>
                     <br/>
                     <div class="botones">
@@ -45,10 +45,14 @@
         <div class="contenedor">
             <h3>Mis Imágenes</h3>
             <div class="botones">
-                <input type="button" value="Agregar Imagen">
+                <button type="submit" formaction="{{ url_for('crear') }}">Agregar Imagen</button>
+                <button type="submit" formaction="{{ url_for('crear') }}">Modificar Imagen</button>
+                <button type="submit" formaction="{{ url_for('crear') }}">Borrar Imagen</button>
+                <button type="submit" formaction="{{ url_for('crear') }}">Descargar Imagen</button>
+                <!--
                 <input type="button" value="Modificar Imagen">
                 <input type="button" value="Borrar Imagen">
-                <input type="button" value="Descargar Imagen">
+                <input type="button" value="Descargar Imagen">-->
             </div>
             <div class="botones">
                 <img class="subidas" src="{{ url_for('static', filename='img/image (1).jpg') }}" alt="">

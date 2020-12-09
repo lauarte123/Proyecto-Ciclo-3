@@ -61,7 +61,10 @@ def login():
 
 @app.route("/perfil")
 def perfil():
-    return render_template('Profile.html')
+    nombre = "Fulanito de Tal"
+    correo = "iepenaranda@uninorte.edu.co"
+    cantidad = 3
+    return render_template('Profile.html', nombre=nombre, correo=correo, cantidad=cantidad)
 
 @app.route("/crear")
 def crear():

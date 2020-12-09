@@ -52,11 +52,16 @@ def login():
 
 @app.route("/perfil")
 def perfil():
-    return render_template('Profile.html')
+    nombre = "Fulanito de Tal"
+    correo = "iepenaranda@uninorte.edu.co"
+    cantidad = 3
+    return render_template('Profile.html', nombre=nombre, correo=correo, cantidad=cantidad)
 
-@app.route("/crear")
+@app.route("/crear", methods=('GET', 'POST'))
 def crear():
-    return render_template('Crear.html')
+    if request.method=="POST":
+        return render_template('Crear.html')
+    return render_template("Crear.html")
 
 @app.route("/modificar")
 def modificar():
