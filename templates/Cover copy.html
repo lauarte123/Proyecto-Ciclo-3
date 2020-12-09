@@ -17,21 +17,16 @@
 </body>
 <body>
     <div class="contenedor">
-        <form action="{{ url_for('login') }}" method="POST"  class="formulario" name="formulario_ingreso">
+        <form method="POST"  class="formulario" name="formulario">
             <h1>POLAROID</h1>
-            <br/>
-
-            {{ form.hidden_tag() }}
-            {{ form.usuario.label }}
-            <br/>
-            {{ form.usuario }}
-            <br/>
-            {{ form.contraseña.label }}
-            <br/>
-            {{ form.contraseña }}
-            <br/>
-            {{ form.enviar }}
-
+            <br />
+            <Input Type="text" name="usuario" placeholder="Usuario">
+            <br />
+            <br />
+            <Input Type="password" placeholder="Contraseña" name="password" id="password">
+            <br />
+            <br />
+            <Input Type="submit" id="boton" value="Ingresar">
             <br />
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Registrarse</button>
             <br />
@@ -76,32 +71,28 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" action="{{ url_for('registro')}}" name="formulario_registro">
-                        
-                    {{ form.hidden_tag() }}
-                    {{ form.nombre.label }}
-                    <br/>
-                    {{ form.nombre }}
-                    <br/>
-                    {{ form.usuario.label }}
-                    <br/>
-                    {{ form.usuario }}
-                    <br/>
-                    {{ form.correo.label }}
-                    <br/>
-                    {{ form.correo }}
-                    <br/>
-                    {{ form.contraseña.label }}
-                    <br/>
-                    {{ form.contraseña }}
-                    <br/>
-                    {{ form.enviar }}
-
+                    <form method="POST" action="{{ url_for('registro')}}">
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Nombre:</label>
+                            <input type="text" class="form-control" id="recipient-name" name="name">
+                        </div>
+                        <div class="form-group">
+                            <label for="recipient-apellidos" class="col-form-label">Usuario:</label>
+                            <input type="text" class="form-control" id="recipient-name" name="username">
+                        </div>
+                        <div class="form-group">
+                            <label for="recipient-correo" class="col-form-label">Email:</label>
+                            <input type="text" class="form-control" id="recipient-correo" name="email">
+                        </div>
+                        <div class="form-group">
+                            <label for="recipient-contraseña" class="col-form-label">Contraseña:</label>
+                            <input type="text" class="form-control" id="recipient-contraseña" name="password">
+                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                    <!-- <button type="button" class="btn btn-primary">Registrarme</button> -->
+                    <button type="button" class="btn btn-primary">Registrarme</button>
                 </div>
             </div>
         </div>
@@ -117,21 +108,11 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" action="{{ url_for('nuevaContraseña')}}" name="formulario_contraseña">
+                    <form>
                         <div class="form-group">
-                            {{ form.usuario.label }}
-                            <br/>
-                            {{ form.usuario }}
-                            <br/>
-                            {{ form.correo.label }}
-                            <br/>
-                            {{ form.correo }}
-                            <br/>
-                            {{ form.enviar }}
-                            <!-- <label for="recipient-name" class="col-form-label">Correo electrónico</label>
-                            <input type="text" class="form-control" id="recipient-name" name="email"> -->
+                            <label for="recipient-name" class="col-form-label">Correo electrónico</label>
+                            <input type="text" class="form-control" id="recipient-name" name="email">
                         </div>
-                    </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>

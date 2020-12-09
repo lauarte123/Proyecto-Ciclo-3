@@ -1,3 +1,36 @@
+/* Estilo que estaba dentro de Cover.html */
+label {
+            display: inline-block;
+            width: 80px;
+        }
+
+        .formulario {
+            margin: 0 auto;
+            display: block;
+        }
+
+        .search-bar input{
+        width: 400px;
+        height: 35px;
+        margin-left: 10px;
+        padding-left: 5px;
+        border-radius: 20px;
+        text-align: left;
+        font-size: 24px;
+        font-family: 'Orienta', sans-serif;
+        border-color: black;
+        }
+
+        .search-bar button{
+        background:  black;
+        color: white;
+        border-radius: 20px;
+        font-size: 24px;
+        object-fit: cover;
+        border-color: transparent;
+        }
+
+/* Estilo Crear y Modificar */
 h2 {
     font-size: 3em;
     text-align: center;
