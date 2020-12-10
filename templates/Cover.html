@@ -21,16 +21,16 @@
             <h1>POLAROID</h1>
             <br/>
 
-            {{ form.hidden_tag() }}
-            {{ form.usuario.label }}
+            {{ form3.hidden_tag() }}
+            {{ form3.usuario.label }}
             <br/>
-            {{ form.usuario }}
+            {{ form3.usuario }}
             <br/>
-            {{ form.contraseña.label }}
+            {{ form3.contraseña.label }}
             <br/>
-            {{ form.contraseña }}
+            {{ form3.contraseña }}
             <br/>
-            {{ form.enviar }}
+            {{ form3.enviar }}
 
             <br />
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Registrarse</button>
@@ -78,24 +78,24 @@
                 <div class="modal-body">
                     <form method="POST" action="{{ url_for('registro')}}" name="formulario_registro">
                         
-                    {{ form.hidden_tag() }}
-                    {{ form.nombre.label }}
+                    {{ form_registro.hidden_tag() }}
+                    {{ form_registro.nombre.label }}
                     <br/>
-                    {{ form.nombre }}
+                    {{ form_registro.nombre }}
                     <br/>
-                    {{ form.usuario.label }}
+                    {{ form_registro.usuario.label }}
                     <br/>
-                    {{ form.usuario }}
+                    {{ form_registro.usuario }}
                     <br/>
-                    {{ form.correo.label }}
+                    {{ form_registro.correo.label }}
                     <br/>
-                    {{ form.correo }}
+                    {{ form_registro.correo }}
                     <br/>
-                    {{ form.contraseña.label }}
+                    {{ form_registro.contraseña.label }}
                     <br/>
-                    {{ form.contraseña }}
+                    {{ form_registro.contraseña }}
                     <br/>
-                    {{ form.enviar }}
+                    {{ form_registro.enviar2 }}
 
                     </form>
                 </div>
@@ -119,19 +119,19 @@
                 <div class="modal-body">
                     <form method="POST" action="{{ url_for('nuevaContraseña')}}" name="formulario_contraseña">
                         <div class="form-group">
-                            {{ form.usuario.label }}
+                            {{ form2.usuario.label }}
                             <br/>
-                            {{ form.usuario }}
+                            {{ form2.usuario }}
                             <br/>
-                            {{ form.correo.label }}
+                            {{ form2.correo.label }}
                             <br/>
-                            {{ form.correo }}
+                            {{ form2.correo }}
                             <br/>
-                            {{ form.enviar }}
+                            {{ form2.enviar }}
                             <!-- <label for="recipient-name" class="col-form-label">Correo electrónico</label>
                             <input type="text" class="form-control" id="recipient-name" name="email"> -->
                         </div>
-                    </form>
+                    </form>3
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>

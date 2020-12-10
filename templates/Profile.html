@@ -45,10 +45,12 @@
         <div class="contenedor">
             <h3>Mis Imágenes</h3>
             <div class="botones">
-                <button type="submit" formaction="{{ url_for('crear') }}">Agregar Imagen</button>
-                <button type="submit" formaction="{{ url_for('crear') }}">Modificar Imagen</button>
-                <button type="submit" formaction="{{ url_for('crear') }}">Borrar Imagen</button>
-                <button type="submit" formaction="{{ url_for('crear') }}">Descargar Imagen</button>
+                <form action="{{ url_for('crear') }}">
+                    <button type="submit" formaction="{{ url_for('crear') }}">Agregar Imagen</button>
+                    <button type="submit" formaction="{{ url_for('crear') }}">Modificar Imagen</button>
+                    <button type="submit" formaction="{{ url_for('crear') }}">Borrar Imagen</button>
+                    <button type="submit" formaction="{{ url_for('crear') }}">Descargar Imagen</button>
+                </form>
                 <!--
                 <input type="button" value="Modificar Imagen">
                 <input type="button" value="Borrar Imagen">

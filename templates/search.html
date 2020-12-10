@@ -20,12 +20,17 @@
                 <button type="button"><i class="fas fa-search"></i></button>
             </span>
             <span class="profile">
-                <button type="button"><i class="fas fa-user-circle"></i></button>
+                <form action="{{ url_for('perfil') }}">
+                    <button type="submit"><i class="fas fa-user-circle"></i></button>
+                </form>
+                <!-- <a href="{{ url_for('perfil') }}"></a> -->
             </span> 
             <span class="upload">
-                <button type="button"><i class="fas fa-upload"></i>
-                    <span style="margin-left: 4px">Subir imagen</span>
+                <form action="{{ url_for('crear') }}">
+                    <button type="submit"><i class="fas fa-upload"></i>
+                        <span style="margin-left: 4px">Subir imagen</span>
                     </button>
+                </form>
             </span>
         </div>
 

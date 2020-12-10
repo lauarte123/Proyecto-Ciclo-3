@@ -14,8 +14,9 @@ class FormRegistro(FlaskForm):
     usuario = StringField('Usuario', validators=[DataRequired(message="No dejar vacío")])
     correo = EmailField('Correo', validators=[DataRequired(message="No dejar vacío")])
     contraseña = PasswordField('Contraseña', validators=[DataRequired(message="No dejar vacío")])
-    enviar = SubmitField('Enviar')
+    enviar2 = SubmitField('Enviar')
 
 class FormContraseña(FlaskForm):
     usuario = StringField('Usuario', validators=[DataRequired(message="No dejar vacío")])
     correo = EmailField('Correo', validators=[DataRequired(message="No dejar vacío")])
+    enviar = SubmitField('Enviar')
