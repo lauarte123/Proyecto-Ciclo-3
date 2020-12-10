@@ -12,44 +12,49 @@ app.secret_key = os.urandom(24)
 #Activación de cuenta
 @app.route("/", methods=('GET', 'POST'))
 def registro():
-    form = FormRegistro()
+    form1 = FormRegistro()
     form2 = FormContraseña()
     form3 = FormInicio()
-    if form.validate_on_submit():
-        name = form.nombre.data
-        username = form.usuario.data
-        email = form.correo.data
-        password = form.contraseña.data
+    if form1.validate_on_submit():
+        name = form1.nombre.data
+        username = form1.usuario.data
+        email = form1.correo.data
+        password = form1.contraseña.data
 
         #El correo de donde la aplicación envía el correo
         yag = yagmail.SMTP('laarteaga@uninorte.edu.co','13uninorte31')
         yag.send(to=email, subject='Activa tu cuenta en Polaroid', contents="Bienvenido, usa el siguiente link para activar tu cuenta")
         return redirect('/')
-    return render_template('Cover.html', form_registro=form, form2=form2, form3=form3)
+    return render_template('Cover.html', form_registro=form1, form_contraseña=form2, form_inicio=form3)
 
 @app.route("/recuperar_contraseña", methods=('GET', 'POST'))
 def nuevaContraseña():
-    form = FormContraseña()
-    if form.validate_on_submit():
-        username = form.usuario.data
-        email = form.correo.data
+    form1 = FormRegistro()
+    form2 = FormContraseña()
+    form3 = FormInicio()
+    if form2.validate_on_submit():
+        username = form2.usuario.data
+        email = form2.correo.data
         
         yag = yagmail.SMTP('laarteaga@uninorte.edu.co','13uninorte31')
         yag.send(to=email, subject='Recuperación de contraseña', contents="Hola, haz clic en el siguiente enlace para recuperar tu contraseña")
         return redirect('/')
-    
-    return redirect('/')
+    return render_template('Cover.html', form_registro=form1, form_contraseña=form2, form_inicio=form3)
+    # return redirect('/')
     # return render_template('Cover.html', form=form)
 
 @app.route("/login", methods=('GET', 'POST'))
 def login():
-    form = FormInicio()
-    if form.validate_on_submit():
-        username = form.usuario.data
+    form1 = FormRegistro()
+    form2 = FormContraseña()
+    form3 = FormInicio()
+    if form3.validate_on_submit():
+        username = form3.usuario.data
+        password = form3.contraseña.data
         # mensaje = f'Usted ha iniciado sesión con el usuario {username}'
         # flash(mensaje)
         return redirect('/perfil')
-    return render_template('Cover.html', form=form)
+    return render_template('Cover.html', form_registro=form1, form_contraseña=form2, form_inicio=form3)
 
 @app.route("/perfil")
 def perfil():

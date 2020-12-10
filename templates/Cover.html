@@ -21,16 +21,16 @@
             <h1>POLAROID</h1>
             <br/>
 
-            {{ form3.hidden_tag() }}
-            {{ form3.usuario.label }}
+            {{ form_inicio.hidden_tag() }}
+            {{ form_inicio.usuario.label }}
             <br/>
-            {{ form3.usuario }}
+            {{ form_inicio.usuario }}
             <br/>
-            {{ form3.contraseña.label }}
+            {{ form_inicio.contraseña.label }}
             <br/>
-            {{ form3.contraseña }}
+            {{ form_inicio.contraseña }}
             <br/>
-            {{ form3.enviar }}
+            {{ form_inicio.enviar }}
 
             <br />
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Registrarse</button>
@@ -119,19 +119,20 @@
                 <div class="modal-body">
                     <form method="POST" action="{{ url_for('nuevaContraseña')}}" name="formulario_contraseña">
                         <div class="form-group">
-                            {{ form2.usuario.label }}
+                            {{ form_contraseña.hidden_tag() }}
+                            {{ form_contraseña.usuario.label }}
                             <br/>
-                            {{ form2.usuario }}
+                            {{ form_contraseña.usuario }}
                             <br/>
-                            {{ form2.correo.label }}
+                            {{ form_contraseña.correo.label }}
                             <br/>
-                            {{ form2.correo }}
+                            {{ form_contraseña.correo }}
                             <br/>
-                            {{ form2.enviar }}
+                            {{ form_contraseña.enviar }}
                             <!-- <label for="recipient-name" class="col-form-label">Correo electrónico</label>
                             <input type="text" class="form-control" id="recipient-name" name="email"> -->
                         </div>
-                    </form>3
+                    </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
