@@ -40,8 +40,7 @@ def nuevaContraseña():
         yag.send(to=email, subject='Recuperación de contraseña', contents="Hola, haz clic en el siguiente enlace para recuperar tu contraseña")
         return redirect('/')
     return render_template('Cover.html', form_registro=form1, form_contraseña=form2, form_inicio=form3)
-    # return redirect('/')
-    # return render_template('Cover.html', form=form)
+    
 
 @app.route("/login", methods=('GET', 'POST'))
 def login():
@@ -73,9 +72,18 @@ def crear():
 def modificar():
     return render_template('modificar.html')
 
-@app.route("/buscar")
-def buscar():
-    return render_template('search.html')
+@app.route('/buscar/<string:busqueda>/', methods=('GET', 'POST'))
+def buscar(busqueda):
+    if request.method == "POST":
+        postInput = request.form.get("busqueda")
+        if postInput:
+            return render_template('search.html', busqueda=postInput)
+    elif request.method == "GET":
+        getInput = request.args.get("busqueda")
+        if getInput:
+            return render_template('search.html', busqueda=getInput)
+        else:
+            return render_template('search.html', busqueda=busqueda)
 
 
 # Activar el modo debug de la aplicacion
