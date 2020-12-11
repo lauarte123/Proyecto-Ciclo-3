@@ -76,14 +76,9 @@ def modificar():
 def buscar(busqueda):
     if request.method == "POST":
         postInput = request.form.get("busqueda")
-        if postInput:
-            return render_template('search.html', busqueda=postInput)
+        return render_template('search.html', busqueda=postInput)
     elif request.method == "GET":
-        getInput = request.args.get("busqueda")
-        if getInput:
-            return render_template('search.html', busqueda=getInput)
-        else:
-            return render_template('search.html', busqueda=busqueda)
+        return render_template('search.html', busqueda=busqueda)
 
 
 # Activar el modo debug de la aplicacion
