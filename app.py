@@ -64,8 +64,6 @@ def perfil():
 
 @app.route("/crear", methods=('GET', 'POST'))
 def crear():
-    if request.method=="POST":
-        return render_template('Crear.html')
     return render_template("Crear.html")
 
 @app.route("/modificar")
