@@ -11,6 +11,7 @@ class FormInicio(FlaskForm):
 
 class FormRegistro(FlaskForm):
     nombre = StringField('Nombre', validators=[DataRequired(message="No dejar vacío")])
+    apellidos = StringField('Apellidos', validators=[DataRequired(message="No dejar vacío")])
     usuario = StringField('Usuario', validators=[DataRequired(message="No dejar vacío")])
     correo = EmailField('Correo', validators=[DataRequired(message="No dejar vacío")])
     contraseña = PasswordField('Contraseña', validators=[DataRequired(message="No dejar vacío")])

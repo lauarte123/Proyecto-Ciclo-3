@@ -1,0 +1,23 @@
+{%extends "layout.html"%}
+{% block content %}
+    <table>
+        <tbody>
+            <tr>
+                <!--Filas-->
+                <td>ID</td>
+                <td>Nombre</td>
+                <td>Precio</td>
+                <td>Existencia</td>
+            </tr>
+            {% for pro in productos %}
+            <tr>
+                <!--Columnas-->
+                <td>{{ pro[0] }}</td>
+                <td>{{ pro[1] }}</td>
+                <td>{{ pro[2] }}</td>
+                <td>{{ pro[3] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock%}

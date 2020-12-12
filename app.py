@@ -18,11 +18,15 @@ def registro():
     form1 = FormRegistro()
     form2 = FormContraseña()
     form3 = FormInicio()
+
     if form1.validate_on_submit():
-        name = form1.nombre.data
-        username = form1.usuario.data
+        nombres = form1.nombre.data
+        apellidos =form1.apellidos.data
+        usuario = form1.usuario.data
         email = form1.correo.data
-        password = form1.contraseña.data
+        contraseña = form1.contraseña.data
+
+        sql_insert_usuarios(usuario, nombres, apellidos, email, contraseña)
 
         #El correo de donde la aplicación envía el correo
         yag = yagmail.SMTP('laarteaga@uninorte.edu.co','13uninorte31')
@@ -36,7 +40,7 @@ def nuevaContraseña():
     form2 = FormContraseña()
     form3 = FormInicio()
     if form2.validate_on_submit():
-        username = form2.usuario.data
+        usuario = form2.usuario.data
         email = form2.correo.data
         
         yag = yagmail.SMTP('laarteaga@uninorte.edu.co','13uninorte31')
@@ -51,12 +55,20 @@ def login():
     form2 = FormContraseña()
     form3 = FormInicio()
     if form3.validate_on_submit():
-        username = form3.usuario.data
-        password = form3.contraseña.data
+        usuario = form3.usuario.data
+        contraseña = form3.contraseña.data
+        listaUsuario = sql_select_usuarios()
+        tamañoLista=len(listaUsuario)
+        for i in range (tamañoLista):
+            if usuario==listaUsuario[i][0] and contraseña==listaUsuario[i][4]:
+                return redirect('/perfil')
+            else:
+                continue
+        return ("Vuelve a intentarlo")
         # mensaje = f'Usted ha iniciado sesión con el usuario {username}'
         # flash(mensaje)
-        return redirect('/perfil')
     return render_template('Cover.html', form_registro=form1, form_contraseña=form2, form_inicio=form3)
+
 
 @app.route("/perfil")
 def perfil():
@@ -81,7 +93,7 @@ def buscar(busqueda):
     elif request.method == "GET":
         return render_template('search.html', busqueda=busqueda)
 
-                                                    ### CONEXIÓN A BASE DE DATOS ###
+### CONEXIÓN A BASE DE DATOS ###
 
 def sql_connection():
     try:
@@ -91,7 +103,7 @@ def sql_connection():
         print(Error)
 
 def sql_insert_usuarios(usuario, nombres, apellidos, correo, contraseña):
-    query = "insert into usuario (usuario, nombres, apellidos, correo, contraseña) values ('" + usuario + "', '" + nombres + "', '" + apellidos + "', '" + correo + "', '" + contraseña "');"
+    query = "insert into usuario (Usuario, Nombres, Apellidos, Correo, Contraseña) values ('" + usuario + "', '" + nombres + "', '" + apellidos + "', '" + correo + "', '" + contraseña +"');"
     try:
         con = sql_connection()
         cursorObj = con.cursor()
@@ -100,6 +112,12 @@ def sql_insert_usuarios(usuario, nombres, apellidos, correo, contraseña):
         con.close()
     except Error:
         print(Error)
+
+@app.route('/prueba')
+def prueba():
+    usuarios = sql_select_usuarios()
+    return render_template('productos.html', productos=usuarios)
+
 
 def sql_select_usuarios():
     query = "select * from usuario;"
