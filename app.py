@@ -4,6 +4,9 @@ import yagmail as yagmail
 import utils
 import secrets
 from forms import FormInicio, FormRegistro, FormContraseña
+import sqlite3
+from sqlite3 import Error
+
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
@@ -78,6 +81,93 @@ def buscar(busqueda):
     elif request.method == "GET":
         return render_template('search.html', busqueda=busqueda)
 
+                                                    ### CONEXIÓN A BASE DE DATOS ###
+
+def sql_connection():
+    try:
+        con = sqlite3.connect('database.db')
+        return con
+    except Error:
+        print(Error)
+
+def sql_insert_usuarios(usuario, nombres, apellidos, correo, contraseña):
+    query = "insert into usuario (usuario, nombres, apellidos, correo, contraseña) values ('" + usuario + "', '" + nombres + "', '" + apellidos + "', '" + correo + "', '" + contraseña "');"
+    try:
+        con = sql_connection()
+        cursorObj = con.cursor()
+        cursorObj.execute(query)
+        con.commit()
+        con.close()
+    except Error:
+        print(Error)
+
+def sql_select_usuarios():
+    query = "select * from usuario;"
+    try: 
+        con = sql_connection()
+        cursorObj = con.cursor()
+        cursorObj.execute(query)
+        usuarios = cursorObj.fetchall()
+        con.close()
+        return usuarios
+    except Error:
+        print(Error)
+
+def sql_edit_usuarios(id, usuario, nombres, apellidos, correo, contraseña):
+    query = "update usuario set usuario='" + usuario + "', nombres='" + nombres + "', apellidos='" + apellidos + "', correo= '" + correo+ "', contraseña = '" + contraseña + "' where id = "+ id + ";"
+    try:
+        con = sql_connection()
+        cursorObj = con.cursor()
+        cursorObj.execute(query)
+        con.commit()
+        con.close()
+    except Error:
+        print(Error)
+
+def sql_delete_usuarios(id):
+    query = "delete from usuario where id = " + id + ";"
+    try:
+        con = sql_connection()
+        cursorObj = con.cursor()
+        cursorObj.execute(query)
+        con.commit()
+        con.close()
+    except Error:
+        print(Error)
+
+# @app.route("/productos")
+# def productos():
+#     productos = sql_select_productos()
+#     return render_template('productos.html', productos=productos)
+
+# @app.route("/crearProducto", methods=('GET', 'POST'))
+# def crearProducto():
+#     if request.method == 'GET':
+#         form = Producto() #Formulario para recoger la info del prod
+#         return render_template('nuevo_producto.html', form=form)
+#     else:
+#         nombre = request.form.get('nombre')
+#         precio = request.form['precio']
+#         existencia = request.form['existencia']
+#         sql_insert_productos(nombre, precio, existencia)
+#         return 'OK'
+
+# @app.route("/editarProducto")
+# # @app.route("/editarProducto", methods=('GET'))
+# def editarProducto():
+#     id = request.args.get('id')
+#     nombre = request.args.get('nombre')
+#     precio = request.args.get('precio')
+#     existencia = request.args.get('existencia')
+#     sql_edit_producto(id, nombre, precio, existencia)
+#     return 'OK'
+
+# @app.route("/eliminarProducto")
+# # @app.route("/eliminarProducto", methods=('GET'))
+# def eliminarProducto():
+#     id = request.args.get('id')
+#     sql_delete_producto(id)
+#     return 'OK'
 
 # Activar el modo debug de la aplicacion
 if __name__ == "__main__":
