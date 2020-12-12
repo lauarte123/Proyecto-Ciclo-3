@@ -42,10 +42,18 @@ def nuevaContraseña():
     if form2.validate_on_submit():
         usuario = form2.usuario.data
         email = form2.correo.data
+        listaUsuario = sql_select_usuarios()
+        tamañoLista=len(listaUsuario)
+        for i in range (tamañoLista):
+            if usuario==listaUsuario[i][0] and email==listaUsuario[i][3]:
+                yag = yagmail.SMTP('laarteaga@uninorte.edu.co','13uninorte31')
+                yag.send(to=email, subject='Recuperación de contraseña', contents="Hola, haz clic en el siguiente enlace para recuperar tu contraseña")
+                return redirect('/')
+            else:
+                continue
+        return ("Usuario no encontrado")
         
-        yag = yagmail.SMTP('laarteaga@uninorte.edu.co','13uninorte31')
-        yag.send(to=email, subject='Recuperación de contraseña', contents="Hola, haz clic en el siguiente enlace para recuperar tu contraseña")
-        return redirect('/')
+        
     return render_template('Cover.html', form_registro=form1, form_contraseña=form2, form_inicio=form3)
     
 
