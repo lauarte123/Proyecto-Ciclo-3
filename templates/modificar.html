@@ -1,47 +1,19 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Modificar imagen</title>
+    <title>Contact V10</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="static/css/Modificar.css">
+    <!--===============================================================================================-->
     <style type="text/css">
-        #div1 {
-            margin-top: 18px;
-        }
-
-        #a {
-            text-align: left;
-        }
-
-        #b {
-            font-family: Helvetica;
-            text-align: right;
-            margin-left: 850px;
-        }
-
-        h1 {
-            font-family: Helvetica;
-            text-align: left
-        }
-
-        p {
-            font-family: arial;
-            text-align: justify;
-            margin: 25px;
-        }
-
         img {
             width: 300px;
             height: 225px;
             margin: 2px;
         }
     </style>
-
-    <!--===============================================================================================-->
-
-
-    <link rel="stylesheet" type="text/css" href="BuscarImagenes.css">
-    <!--===============================================================================================-->
 </head>
 <body>
     <div id="div1">
@@ -57,7 +29,8 @@
                 <span class="contact100-form-title">
                     Modificar imagen
                 </span>
-                <img src="{{ url_for('static', filename='img/image (6).jpg') }}" alt="">
+                <center><img src="{{ url_for('static', filename='img/image (6).jpg') }}"></center>
+
                 <div class="wrap-input100 validate-input">
                     <input class="input100" type="text" name="nombre de la imagen" placeholder="Nombre de la imagen">
                     <span class="focus-input100"></span>
@@ -95,10 +68,3 @@
             </form>
         </div>
     </div>
-
-
-
-
-
-</body>
-</html>
