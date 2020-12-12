@@ -169,6 +169,8 @@ def sql_delete_usuarios(id):
 #     sql_delete_producto(id)
 #     return 'OK'
 
+#HOLA MUNDO
+
 # Activar el modo debug de la aplicacion
 if __name__ == "__main__":
     app.run(debug=True)
