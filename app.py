@@ -161,6 +161,65 @@ def sql_delete_usuarios(id):
     except Error:
         print(Error)
 
+
+#------------- CRUD de las imágenes  --------------------
+def sql_insert_imagen(id_usuario, nombre, ruta, privada):
+    query = "INSERT INTO Imagen (Id_usuario, Nombre_imagen, Ruta_guardar, Privada) VALUES ("+id_usuario+",'"+nombre+"','"+ruta+"',"+privada+");"
+    try:
+        con = sql_connection()
+        cursorObj = con.cursor()
+        cursorObj.execute(query)
+        con.commit()
+        con.close()
+    except Error:
+        print(Error)
+
+def sql_select_imagen(id):
+    query = "SELECT * FROM Imagen WHERE Id_imagen="+id+";"
+    try:
+        con = sql_connection()
+        cursorObj = con.cursor()
+        cursorObj.execute(query)
+        imagen = cursorObj.fetchall()
+        con.close()
+        return imagen
+    except Error:
+        print(Error)
+
+def sql_select_imagenes():
+    query = "SELECT * FROM Imagen;"
+    try:
+        con = sql_connection()
+        cursorObj = con.cursor()
+        cursorObj.execute(query)
+        imagenes = cursorObj.fetchall()
+        con.close()
+        return imagenes
+    except Error:
+        print(Error)
+
+def sql_update_imagen(id,nombre,privada):
+    query = "UPDATE Imagen SET Nombre_imagen='"+nombre+"', privada="+privada+" WHERE Id_imagen="id+";"
+    try:
+        con = sql_connection()
+        cursorObj = con.cursor()
+        cursorObj.execute(query)
+        con.commit()
+        con.close()
+    except Error:
+        print(Error)
+
+def sql_delete_imagen(id):
+    query = "DELETE FROM Imagen WHERE Id_imagen="+id
+    try:
+        con = sql_connection()
+        cursorObj = con.cursor()
+        cursorObj.execute(query)
+        con.commit()
+        con.close()
+    except Error:
+        print(Error)
+
 # @app.route("/productos")
 # def productos():
 #     productos = sql_select_productos()
