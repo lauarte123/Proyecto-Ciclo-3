@@ -42,10 +42,18 @@ def nuevaContraseña():
     if form2.validate_on_submit():
         usuario = form2.usuario.data
         email = form2.correo.data
+        listaUsuario = sql_select_usuarios()
+        tamañoLista=len(listaUsuario)
+        for i in range (tamañoLista):
+            if usuario==listaUsuario[i][0] and email==listaUsuario[i][3]:
+                yag = yagmail.SMTP('laarteaga@uninorte.edu.co','13uninorte31')
+                yag.send(to=email, subject='Recuperación de contraseña', contents="Hola, haz clic en el siguiente enlace para recuperar tu contraseña")
+                return redirect('/')
+            else:
+                continue
+        return ("Usuario no encontrado")
         
-        yag = yagmail.SMTP('laarteaga@uninorte.edu.co','13uninorte31')
-        yag.send(to=email, subject='Recuperación de contraseña', contents="Hola, haz clic en el siguiente enlace para recuperar tu contraseña")
-        return redirect('/')
+        
     return render_template('Cover.html', form_registro=form1, form_contraseña=form2, form_inicio=form3)
     
 
@@ -168,6 +176,65 @@ def sql_edit_usuarios(usuario, nombres, apellidos, correo, contraseña):
 
 def sql_delete_usuarios(id):
     query = "delete from usuario where id = " + id + ";"
+    try:
+        con = sql_connection()
+        cursorObj = con.cursor()
+        cursorObj.execute(query)
+        con.commit()
+        con.close()
+    except Error:
+        print(Error)
+
+
+#------------- CRUD de las imágenes  --------------------
+def sql_insert_imagen(id_usuario, nombre, ruta, privada):
+    query = "INSERT INTO Imagen (Id_usuario, Nombre_imagen, Ruta_guardar, Privada) VALUES ("+id_usuario+",'"+nombre+"','"+ruta+"',"+privada+");"
+    try:
+        con = sql_connection()
+        cursorObj = con.cursor()
+        cursorObj.execute(query)
+        con.commit()
+        con.close()
+    except Error:
+        print(Error)
+
+def sql_select_imagen(id):
+    query = "SELECT * FROM Imagen WHERE Id_imagen="+id+";"
+    try:
+        con = sql_connection()
+        cursorObj = con.cursor()
+        cursorObj.execute(query)
+        imagen = cursorObj.fetchall()
+        con.close()
+        return imagen
+    except Error:
+        print(Error)
+
+def sql_select_imagenes():
+    query = "SELECT * FROM Imagen;"
+    try:
+        con = sql_connection()
+        cursorObj = con.cursor()
+        cursorObj.execute(query)
+        imagenes = cursorObj.fetchall()
+        con.close()
+        return imagenes
+    except Error:
+        print(Error)
+
+def sql_update_imagen(id,nombre,privada):
+    query = "UPDATE Imagen SET Nombre_imagen='"+nombre+"', privada="+privada+" WHERE Id_imagen="id+";"
+    try:
+        con = sql_connection()
+        cursorObj = con.cursor()
+        cursorObj.execute(query)
+        con.commit()
+        con.close()
+    except Error:
+        print(Error)
+
+def sql_delete_imagen(id):
+    query = "DELETE FROM Imagen WHERE Id_imagen="+id
     try:
         con = sql_connection()
         cursorObj = con.cursor()
