@@ -3,7 +3,7 @@ import os
 import yagmail as yagmail
 import utils
 import secrets
-from forms import FormInicio, FormRegistro, FormContraseña
+from forms import FormInicio, FormRegistro, FormContraseña, FormActualizarUsuario
 import sqlite3
 from sqlite3 import Error
 
@@ -72,10 +72,34 @@ def login():
 
 @app.route("/perfil")
 def perfil():
+    form = FormActualizarUsuario()
     nombre = "Fulanito de Tal"
     correo = "iepenaranda@uninorte.edu.co"
     cantidad = 3
-    return render_template('Profile.html', nombre=nombre, correo=correo, cantidad=cantidad)
+    return render_template('Profile.html', nombre=nombre, correo=correo, cantidad=cantidad, form_actualizar_usuario=form)
+
+@app.route("/actualizarInformacion", methods=('GET', 'POST'))
+def actualizarInformacion():
+    form = FormActualizarUsuario()
+    if form.validate_on_submit():
+        nombres = form.nombre.data
+        apellidos =form.apellidos.data
+        usuario = form.usuario.data
+        email = form.correo.data
+        contraseñaAnterior = form.contraseñaAnterior.data
+        contraseñaNueva = form.contraseñaNueva.data
+        #Validación datos usuario
+        listaUsuario = sql_select_usuarios()
+        tamañoLista=len(listaUsuario)
+        for i in range (tamañoLista):
+            if usuario == listaUsuario[i][0] and contraseñaAnterior == listaUsuario[i][4]:
+                sql_edit_usuarios(usuario, nombres, apellidos, email, contraseñaNueva)
+                return 'Usuario actualizado'
+            else:
+                continue
+    return redirect('/perfil')
+        
+
 
 @app.route("/crear", methods=('GET', 'POST'))
 def crear():
@@ -131,8 +155,8 @@ def sql_select_usuarios():
     except Error:
         print(Error)
 
-def sql_edit_usuarios(id, usuario, nombres, apellidos, correo, contraseña):
-    query = "update usuario set usuario='" + usuario + "', nombres='" + nombres + "', apellidos='" + apellidos + "', correo= '" + correo+ "', contraseña = '" + contraseña + "' where id = "+ id + ";"
+def sql_edit_usuarios(usuario, nombres, apellidos, correo, contraseña):
+    query = "update usuario set nombres='" + nombres + "', apellidos='" + apellidos + "', correo= '" + correo+ "', contraseña = '" + contraseña + "' where usuario = '"+ usuario + "';"
     try:
         con = sql_connection()
         cursorObj = con.cursor()

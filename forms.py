@@ -21,3 +21,12 @@ class FormContraseña(FlaskForm):
     usuario = StringField('Usuario', validators=[DataRequired(message="No dejar vacío")])
     correo = EmailField('Correo', validators=[DataRequired(message="No dejar vacío")])
     enviar = SubmitField('Enviar')
+
+class FormActualizarUsuario(FlaskForm):
+    nombre = StringField('Nombre', validators=[DataRequired(message="No dejar vacío")])
+    apellidos = StringField('Apellidos', validators=[DataRequired(message="No dejar vacío")])
+    usuario = StringField('Usuario', validators=[DataRequired(message="No dejar vacío")])
+    correo = EmailField('Correo', validators=[DataRequired(message="No dejar vacío")])
+    contraseñaAnterior = PasswordField('Contraseña anterior', validators=[DataRequired(message="No dejar vacío")])
+    contraseñaNueva = PasswordField('Contraseña nueva', validators=[DataRequired(message="No dejar vacío")])
+    enviar = SubmitField('Registrarse')    
