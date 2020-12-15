@@ -29,4 +29,9 @@ class FormActualizarUsuario(FlaskForm):
     correo = EmailField('Correo', validators=[DataRequired(message="No dejar vacío")])
     contraseñaAnterior = PasswordField('Contraseña anterior', validators=[DataRequired(message="No dejar vacío")])
     contraseñaNueva = PasswordField('Contraseña nueva', validators=[DataRequired(message="No dejar vacío")])
-    enviar = SubmitField('Registrarse')    
+    enviar = SubmitField('Guardar registro') 
+
+class FormEliminarUsuario(FlaskForm):   
+    usuario = StringField('Usuario', validators=[DataRequired(message="No dejar vacío")])
+    contraseña = PasswordField('Contraseña', validators=[DataRequired(message="No dejar vacío")])
+    enviar = SubmitField('Eliminar usuario')

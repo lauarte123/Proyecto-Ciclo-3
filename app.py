@@ -1,9 +1,8 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, flash
 import os
 import yagmail as yagmail
 import utils
-import secrets
-from forms import FormInicio, FormRegistro, FormContraseña, FormActualizarUsuario
+from forms import FormInicio, FormRegistro, FormContraseña, FormActualizarUsuario, FormEliminarUsuario
 import sqlite3
 from sqlite3 import Error
 
@@ -28,7 +27,7 @@ def registro():
 
         sql_insert_usuarios(usuario, nombres, apellidos, email, contraseña)
 
-        #El correo de donde la aplicación envía el correo
+        
         yag = yagmail.SMTP('laarteaga@uninorte.edu.co','13uninorte31')
         yag.send(to=email, subject='Activa tu cuenta en Polaroid', contents="Bienvenido, usa el siguiente link para activar tu cuenta")
         return redirect('/')
@@ -80,11 +79,12 @@ def login():
 
 @app.route("/perfil")
 def perfil():
-    form = FormActualizarUsuario()
+    form1 = FormActualizarUsuario()
+    form2 = FormEliminarUsuario()
     nombre = "Fulanito de Tal"
     correo = "iepenaranda@uninorte.edu.co"
     cantidad = 3
-    return render_template('Profile.html', nombre=nombre, correo=correo, cantidad=cantidad, form_actualizar_usuario=form)
+    return render_template('Profile.html', nombre=nombre, correo=correo, cantidad=cantidad, form_actualizar_usuario=form1, form_eliminar_usuario=form2)
 
 @app.route("/actualizarInformacion", methods=('GET', 'POST'))
 def actualizarInformacion():
@@ -102,11 +102,32 @@ def actualizarInformacion():
         for i in range (tamañoLista):
             if usuario == listaUsuario[i][0] and contraseñaAnterior == listaUsuario[i][4]:
                 sql_edit_usuarios(usuario, nombres, apellidos, email, contraseñaNueva)
-                return 'Usuario actualizado'
+                mensaje = 'Su información de ha sido actualizada correctamente'
+                flash(mensaje)
+                return redirect('/perfil')
             else:
                 continue
     return redirect('/perfil')
         
+
+@app.route("/eliminar_usuario", methods=('GET', 'POST'))
+def eliminar_usuario():
+    form = FormEliminarUsuario()
+    if form.validate_on_submit():
+        usuario = form.usuario.data
+        contraseña = form.contraseña.data
+
+        listaUsuario = sql_select_usuarios()
+        tamañoLista=len(listaUsuario)
+        for i in range (tamañoLista):
+            if usuario == listaUsuario[i][0] and contraseña == listaUsuario[i][4]:
+                sql_delete_usuarios(usuario)
+                # mensaje = 'Su información de ha sido actualizada correctamente'
+                # flash(mensaje)
+                return redirect('/')
+            else:
+                continue
+    return redirect('/perfil')
 
 
 @app.route("/crear", methods=('GET', 'POST'))
@@ -174,8 +195,8 @@ def sql_edit_usuarios(usuario, nombres, apellidos, correo, contraseña):
     except Error:
         print(Error)
 
-def sql_delete_usuarios(id):
-    query = "delete from usuario where id = " + id + ";"
+def sql_delete_usuarios(usuario):
+    query = "delete from usuario where usuario = '" + usuario + "';"
     try:
         con = sql_connection()
         cursorObj = con.cursor()
@@ -223,7 +244,7 @@ def sql_select_imagenes():
         print(Error)
 
 def sql_update_imagen(id,nombre,privada):
-    query = "UPDATE Imagen SET Nombre_imagen='"+nombre+"', privada="+privada+" WHERE Id_imagen="id+";"
+    query = "UPDATE Imagen SET Nombre_imagen='"+nombre+"', privada="+privada+" WHERE Id_imagen="+id+";"
     try:
         con = sql_connection()
         cursorObj = con.cursor()
@@ -244,41 +265,6 @@ def sql_delete_imagen(id):
     except Error:
         print(Error)
 
-# @app.route("/productos")
-# def productos():
-#     productos = sql_select_productos()
-#     return render_template('productos.html', productos=productos)
-
-# @app.route("/crearProducto", methods=('GET', 'POST'))
-# def crearProducto():
-#     if request.method == 'GET':
-#         form = Producto() #Formulario para recoger la info del prod
-#         return render_template('nuevo_producto.html', form=form)
-#     else:
-#         nombre = request.form.get('nombre')
-#         precio = request.form['precio']
-#         existencia = request.form['existencia']
-#         sql_insert_productos(nombre, precio, existencia)
-#         return 'OK'
-
-# @app.route("/editarProducto")
-# # @app.route("/editarProducto", methods=('GET'))
-# def editarProducto():
-#     id = request.args.get('id')
-#     nombre = request.args.get('nombre')
-#     precio = request.args.get('precio')
-#     existencia = request.args.get('existencia')
-#     sql_edit_producto(id, nombre, precio, existencia)
-#     return 'OK'
-
-# @app.route("/eliminarProducto")
-# # @app.route("/eliminarProducto", methods=('GET'))
-# def eliminarProducto():
-#     id = request.args.get('id')
-#     sql_delete_producto(id)
-#     return 'OK'
-
-#HOLA MUNDO
 
 # Activar el modo debug de la aplicacion
 if __name__ == "__main__":
