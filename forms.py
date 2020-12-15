@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, FileField
 from wtforms.validators import DataRequired
 from wtforms.fields.html5 import EmailField
 
@@ -35,3 +35,18 @@ class FormEliminarUsuario(FlaskForm):
     usuario = StringField('Usuario', validators=[DataRequired(message="No dejar vacío")])
     contraseña = PasswordField('Contraseña', validators=[DataRequired(message="No dejar vacío")])
     enviar = SubmitField('Eliminar usuario')
+
+#--------- FORMULARIOS PARA LAS IMAGENES --------------------
+
+class SubirImagen(FlaskForm):
+    nombre = StringField('Nombre:', validators=[DataRequired(message="No dejar vacío")])
+    descripcion = StringField('Descripción:', validators=[DataRequired(message="No dejar vacío")])
+    privacidad = BooleanField('Privada:')
+    #imagen = FileField('Imagen:',  validators=[DataRequired(message="No dejar vacío")])
+    enviar = SubmitField('Subir Imagen')
+
+class ActualizarImagens(FlaskForm):
+    nombre = StringField('Nombre:', validators=[DataRequired(message="No dejar vacío")])
+    descripcion = StringField('Descripción:', validators=[DataRequired(message="No dejar vacío")])
+    privacidad = BooleanField('Privada:')
+    enviar = SubmitField('Actualizar     Imagen')
