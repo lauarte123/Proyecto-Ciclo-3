@@ -6,10 +6,11 @@ from forms import FormInicio, FormRegistro, FormContraseña, FormActualizarUsuar
 import sqlite3
 from sqlite3 import Error
 
+#from werkzeug import secure_filename
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
-
+app.config['UPLOAD_FOLDER'] = "./Archivos"
 
 #Activación de cuenta
 @app.route("/", methods=('GET', 'POST'))
@@ -255,7 +256,7 @@ def sql_update_imagen(id,nombre,privada):
         print(Error)
 
 def sql_delete_imagen(id):
-    query = "DELETE FROM Imagen WHERE Id_imagen="+id
+    query = "DELETE FROM Imagen WHERE Id_imagen="+id+";"
     try:
         con = sql_connection()
         cursorObj = con.cursor()
@@ -264,7 +265,6 @@ def sql_delete_imagen(id):
         con.close()
     except Error:
         print(Error)
-
 
 # Activar el modo debug de la aplicacion
 if __name__ == "__main__":

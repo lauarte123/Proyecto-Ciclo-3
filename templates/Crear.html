@@ -5,13 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-
     <!--===============================================================================================-->
-
 
     <link rel="stylesheet" type="text/css" href="static/css/Modificar.css">
     <!--===============================================================================================-->
 </head>
+
 <body>
     <div id="div1">
         <span id="a">
@@ -26,31 +25,32 @@
                 <span class="contact100-form-title">
                     Crear nueva Imagen
                 </span>
-                <div class="wrap-input100 validate-input">
-                    <input class="input100" type="text" name="nombre de la imagen" placeholder="Nombre de la imagen">
-                    <span class="focus-input100"></span>
-                </div>
+                
+                <form action="{{ url_for('crear') }}" method="POST" name="form_subir" enctype="multipart/form-data">
 
-                <div class="wrap-input100 validate-input" data-validate="Please enter your message">
-                    <textarea class="input100" name="message" placeholder="Descripción de la imagen"></textarea>
-                    <span class="focus-input100"></span>
-                </div>
-                <p>
+                    <div class="wrap-input100 validate-input" data-validate="Por favor pongale un titulo a la imagen.">
+                        <input class="input100" type="text" name="nombre" placeholder="Nombre de la imagen">
+                        <span class="focus-input100"></span>
+                    </div>
+    
+                    <div class="wrap-input100 validate-input" data-validate="Por favor pongale una descripción a la imagesn">
+                        <textarea class="input100" name="descripcion" placeholder="Descripción de la imagen"></textarea>
+                        <span class="focus-input100"></span>
+                    </div>
+                    <p>
+                        Privacidad:<br>
+                        <input type="radio" name="Privacidad" value="publica"> Pública<br>
+                        <input type="radio" name="Privacidad" value="Privada"> Privada<br>
+                    </p>
+    
+                    <div class="container-contact100-form-btn">
+                        <input type="file"
+                               id="avatar" name="avatar"
+                               accept="image/png, image/jpeg">
+                    </div>
 
-                    Privacidad:<br>
-
-                    <input type="radio" name="Privacidad" value="publica"> Pública<br>
-
-
-                    <input type="radio" name="Privacidad" value="Privada"> Privada<br>
-
-                </p>
-                <div class="container-contact100-form-btn">
-                    <input type="file"
-                           id="avatar" name="avatar"
-                           accept="image/png, image/jpeg">
-
-                </div>
+                </form>
+                
             </form>
         </div>
     </div>

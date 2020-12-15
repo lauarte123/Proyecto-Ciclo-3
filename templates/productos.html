@@ -4,10 +4,12 @@
         <tbody>
             <tr>
                 <!--Filas-->
-                <td>ID</td>
-                <td>Nombre</td>
-                <td>Precio</td>
-                <td>Existencia</td>
+                <td>Id_imagen</td>
+                <td>Id_usuario</td>
+                <td>Nombre_imagen</td>
+                <td>Ruta_guaradr</td>
+                <td>Privada</td>
+                <td>Descripcion</td>
             </tr>
             {% for pro in productos %}
             <tr>
@@ -16,6 +18,8 @@
                 <td>{{ pro[1] }}</td>
                 <td>{{ pro[2] }}</td>
                 <td>{{ pro[3] }}</td>
+                <td>{{ pro[4] }}</td>
+                <td>{{ pro[5] }}</td>
             </tr>
             {% endfor %}
         </tbody>
