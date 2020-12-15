@@ -49,4 +49,4 @@ class ActualizarImagens(FlaskForm):
     nombre = StringField('Nombre:', validators=[DataRequired(message="No dejar vacío")])
     descripcion = StringField('Descripción:', validators=[DataRequired(message="No dejar vacío")])
     privacidad = BooleanField('Privada:')
-    enviar = SubmitField('Actualizar     Imagen')
+    enviar = SubmitField('Actualizar Imagen')
