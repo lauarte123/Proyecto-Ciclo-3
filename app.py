@@ -35,24 +35,30 @@ def principal():
 #Activación de cuenta
 @app.route('/registro/', methods=('GET', 'POST'))
 def registro():
-    form1 = FormRegistro()
-    form2 = FormContraseña()
-    form3 = FormInicio()
+    try:
+        form1 = FormRegistro()
+        form2 = FormContraseña()
+        form3 = FormInicio()
 
-    if form1.validate_on_submit():
-        nombres = form1.nombre.data
-        apellidos =form1.apellidos.data
-        usuario = form1.usuario.data
-        email = form1.correo.data
-        contraseña = form1.contraseña.data
+        if form1.validate_on_submit():
+            db = get_db()
 
-        sql_insert_usuarios(usuario, nombres, apellidos, email, contraseña)
+            nombres = form1.nombre.data
+            apellidos =form1.apellidos.data
+            usuario = form1.usuario.data
+            email = form1.correo.data
+            contraseña = form1.contraseña.data
 
-        
-        yag = yagmail.SMTP('laarteaga@uninorte.edu.co','13uninorte31')
-        yag.send(to=email, subject='Activa tu cuenta en Polaroid', contents="Bienvenido, usa el siguiente link para activar tu cuenta")
-        return redirect('/')
-    return render_template('Cover.html', form_registro=form1, form_contraseña=form2, form_inicio=form3)
+            db.execute('insert into usuario (Usuario, Nombres, Apellidos, Correo, Contraseña) values(?,?,?,?,?) ', (usuario, nombres, apellidos, email, contraseña))
+            db.commit()
+
+            yag = yagmail.SMTP('laarteaga@uninorte.edu.co','13uninorte31')
+            yag.send(to=email, subject='Activa tu cuenta en Polaroid', contents="Bienvenido, usa el siguiente link para activar tu cuenta")
+            return redirect('/')
+        return render_template('Cover.html', form_registro=form1, form_contraseña=form2, form_inicio=form3)
+    
+    except Error:
+        return "Error"
 
 @app.route("/recuperar_contraseña", methods=('GET', 'POST'))
 def nuevaContraseña():

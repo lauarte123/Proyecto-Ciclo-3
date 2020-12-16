@@ -21,62 +21,51 @@
 
     <div class="container-contact100">
         <div class="wrap-contact100">
-            <!--<form class="contact100-form validate-form">-->
-                <span class="contact100-form-title">
-                    Crear nueva Imagen
-                </span>
-                
-                <form action="{{ url_for('crear') }}" method="POST" name="formulario subir" enctype="multipart/form-data">
 
-                    {{ form_subir.hidden_tag() }}
+            <span class="contact100-form-title">
+                Crear nueva Imagen
+            </span>
+            
+            <form action="{{ url_for('crear') }}" method="POST" name="formulario subir" enctype="multipart/form-data">
 
-                    {{ form_subir.nombre.label }}
-                    {{ form_subir.nombre }}
-                    <br>
-                    <br>
-                    {{ form_subir.descripcion.label }}
-                    {{ form_subir.descripcion }}
-                    <br>
-                    <br>
-                    {{ form_subir.privacidad.label }}
-                    {{ form_subir.privacidad }}
-                    <br>    
-                    <br>
-                    
+                {{ form_subir.hidden_tag() }}
 
-                    {{ form_subir.enviar }}
+                {{ form_subir.nombre.label }}
+                {{ form_subir.nombre }}
+                <br>
+                <br>
+                {{ form_subir.descripcion.label }}
+                {{ form_subir.descripcion }}
+                <br>
+                <br>
+                {{ form_subir.privacidad.label }}
+                {{ form_subir.privacidad }}
+                <br>    
+                <br>
+                {{ form_subir.enviar }}
 
+                <!--<div class="wrap-input100 validate-input" data-validate="Por favor pongale un titulo a la imagen.">
+                    <input class="input100" type="text" name="nombre" placeholder="Nombre de la imagen">
+                    <span class="focus-input100"></span>
+                </div>
 
-                    <!--<div class="wrap-input100 validate-input" data-validate="Por favor pongale un titulo a la imagen.">
-                        <input class="input100" type="text" name="nombre" placeholder="Nombre de la imagen">
-                        <span class="focus-input100"></span>
-                    </div>
-    
-                    <div class="wrap-input100 validate-input" data-validate="Por favor pongale una descripción a la imagesn">
-                        <textarea class="input100" name="descripcion" placeholder="Descripción de la imagen"></textarea>
-                        <span class="focus-input100"></span>
-                    </div>
-                    <p>
-                        Privacidad:<br>
-                        <input type="radio" name="Privacidad" value="publica"> Pública<br>
-                        <input type="radio" name="Privacidad" value="Privada"> Privada<br>
-                    </p>
-    
-                    <div class="container-contact100-form-btn">
-                        <input type="file"
-                               id="avatar" name="avatar"
-                               accept="image/png, image/jpeg">
-                    </div>-->
+                <div class="wrap-input100 validate-input" data-validate="Por favor pongale una descripción a la imagesn">
+                    <textarea class="input100" name="descripcion" placeholder="Descripción de la imagen"></textarea>
+                    <span class="focus-input100"></span>
+                </div>
+                <p>
+                    Privacidad:<br>
+                    <input type="radio" name="Privacidad" value="publica"> Pública<br>
+                    <input type="radio" name="Privacidad" value="Privada"> Privada<br>
+                </p>
 
-                </form>
-                
-            <!--</form>-->
+                <div class="container-contact100-form-btn">
+                    <input type="file"
+                            id="avatar" name="avatar"
+                            accept="image/png, image/jpeg">
+                </div>-->
+            </form>
         </div>
     </div>
-
-
-
-
-
 </body>
 </html>
