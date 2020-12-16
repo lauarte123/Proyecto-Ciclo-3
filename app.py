@@ -1,8 +1,10 @@
-from flask import Flask, render_template, request, redirect, flash
-import os
+from flask import Flask, render_template, request, redirect, url_for, flash, session, current_app, g, send_file
+import os, functools
 import yagmail as yagmail
 import utils
+from db import get_db, close_db
 from forms import FormInicio, FormRegistro, FormContraseña, FormActualizarUsuario, FormEliminarUsuario, SubirImagen, ActualizarImagen
+from functools import wraps
 import sqlite3
 from sqlite3 import Error
 
@@ -11,6 +13,15 @@ from sqlite3 import Error
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
 app.config['UPLOAD_FOLDER'] = "./Archivos"
+
+#Función decoradora para validar el login
+def login_required(view):
+    @wraps(view)
+    def wrapped_view(*args, **kwds):
+        if g.user is None:
+            return redirect(url_for('login'))
+        return view(*args, **kwds)
+    return wrapped_view
 
 #Activación de cuenta
 @app.route("/", methods=('GET', 'POST'))
@@ -59,33 +70,48 @@ def nuevaContraseña():
 
 @app.route("/login", methods=('GET', 'POST'))
 def login():
-    form1 = FormRegistro()
-    form2 = FormContraseña()
-    form3 = FormInicio()
-    if form3.validate_on_submit():
-        usuario = form3.usuario.data
-        contraseña = form3.contraseña.data
-        listaUsuario = sql_select_usuarios()
-        tamañoLista=len(listaUsuario)
-        for i in range (tamañoLista):
-            if usuario==listaUsuario[i][0] and contraseña==listaUsuario[i][4]:
-                return redirect('/perfil')
+    try:
+        form1 = FormRegistro()
+        form2 = FormContraseña()
+        form3 = FormInicio()
+        if g.user:
+            return redirect(url_for('perfil'))
+        if request.method == 'POST':
+            db = get_db()
+            
+            error = None
+            # if form3.validate_on_submit():
+            usuario = form3.usuario.data
+            contraseña = form3.contraseña.data
+            # return('cualquier cosa')
+            user = db.execute('SELECT * FROM usuario WHERE usuario = ?', (usuario, )).fetchone()
+
+            if user is None:
+                error = 'Usuario o contraseña inválidos'
             else:
-                continue
-        return ("Vuelve a intentarlo")
-        # mensaje = f'Usted ha iniciado sesión con el usuario {username}'
-        # flash(mensaje)
-    return render_template('Cover.html', form_registro=form1, form_contraseña=form2, form_inicio=form3)
+                session.clear()
+                session['usuario'] = user[0]
+                return redirect(url_for('perfil'))
+            flash(error)
+        return render_template('Cover.html', form_registro=form1, form_contraseña=form2, form_inicio=form3)
+    except Error:
+        print(Error)
+        return('Error')
+        # return render_template('Cover.html', form_registro=form1, form_contraseña=form2, form_inicio=form3)
 
 
-@app.route("/perfil")
+@app.route("/perfil", methods=('GET', 'POST'))
+@login_required
 def perfil():
     form1 = FormActualizarUsuario()
     form2 = FormEliminarUsuario()
-    nombre = "Fulanito de Tal"
-    correo = "iepenaranda@uninorte.edu.co"
-    cantidad = 3
-    return render_template('Profile.html', nombre=nombre, correo=correo, cantidad=cantidad, form_actualizar_usuario=form1, form_eliminar_usuario=form2)
+    db = get_db()
+    nombre = g.user['Nombres']
+    correo = g.user['Correo']
+    return render_template('Profile.html', nombre=nombre, correo=correo, form_actualizar_usuario=form1, form_eliminar_usuario=form2)
+
+
+
 
 @app.route("/actualizarInformacion", methods=('GET', 'POST'))
 def actualizarInformacion():
@@ -275,6 +301,21 @@ def sql_delete_imagen(id):
         con.close()
     except Error:
         print(Error)
+
+@app.before_request
+def load_logged_in_user():
+    usuario = session.get('usuario') 
+    
+    if usuario is None:
+        g.user = None
+    else:
+        g.user = get_db().execute('SELECT * FROM usuario WHERE usuario = ?', (usuario,)).fetchone()
+
+# Limpia la variable de sesión y redirige a la página principal
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('Cover'))
 
 # Activar el modo debug de la aplicacion
 if __name__ == "__main__":

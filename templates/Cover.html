@@ -16,6 +16,14 @@
 <body background="{{ url_for('static', filename='img/Foto.JPG')}}">
 </body>
 <body>
+
+    <section class="content">
+
+        {% for message in get_flashed_messages() %}
+            <div class="flash">{{ message }}</div>
+        {% endfor %}
+    </section>
+    
     <div class="contenedor">
         <form action="{{ url_for('login') }}" method="POST"  class="formulario" name="formulario_ingreso">
             <h1>POLAROID</h1>
