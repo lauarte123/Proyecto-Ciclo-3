@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, flash
 import os
 import yagmail as yagmail
 import utils
-from forms import FormInicio, FormRegistro, FormContraseña, FormActualizarUsuario, FormEliminarUsuario
+from forms import FormInicio, FormRegistro, FormContraseña, FormActualizarUsuario, FormEliminarUsuario, SubirImagen, ActualizarImagen
 import sqlite3
 from sqlite3 import Error
 
@@ -133,7 +133,17 @@ def eliminar_usuario():
 
 @app.route("/crear", methods=('GET', 'POST'))
 def crear():
-    return render_template("Crear.html")
+    form = SubirImagen()
+    if form.validate_on_submit():
+        nombre = form.nombre.data
+        descripcion = form.descripcion.data
+        privacidad = str(form.privacidad.data)
+        usuario = "iepenaranda"
+        sql_insert_imagen(usuario, nombre, descripcion, privacidad)
+        
+        return redirect("/perfil")
+
+    return render_template("Crear.html", form_subir=form)
 
 @app.route("/modificar")
 def modificar():
@@ -210,7 +220,7 @@ def sql_delete_usuarios(usuario):
 
 #------------- CRUD de las imágenes  --------------------
 def sql_insert_imagen(id_usuario, nombre, ruta, privada):
-    query = "INSERT INTO Imagen (Id_usuario, Nombre_imagen, Ruta_guardar, Privada) VALUES ("+id_usuario+",'"+nombre+"','"+ruta+"',"+privada+");"
+    query = "INSERT INTO Imagen (Id_usuario, Nombre_imagen, Ruta_guardar, Privada) VALUES ('"+id_usuario+"','"+nombre+"','"+ruta+"',"+privada+");"
     try:
         con = sql_connection()
         cursorObj = con.cursor()

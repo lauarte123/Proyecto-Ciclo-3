@@ -42,10 +42,10 @@ class SubirImagen(FlaskForm):
     nombre = StringField('Nombre:', validators=[DataRequired(message="No dejar vacío")])
     descripcion = StringField('Descripción:', validators=[DataRequired(message="No dejar vacío")])
     privacidad = BooleanField('Privada:')
-    #imagen = FileField('Imagen:',  validators=[DataRequired(message="No dejar vacío")])
+    #imagen = FileField('Imagen:',  validators=[DataRequired(message="Adjunte la imagen")])
     enviar = SubmitField('Subir Imagen')
 
-class ActualizarImagens(FlaskForm):
+class ActualizarImagen(FlaskForm):
     nombre = StringField('Nombre:', validators=[DataRequired(message="No dejar vacío")])
     descripcion = StringField('Descripción:', validators=[DataRequired(message="No dejar vacío")])
     privacidad = BooleanField('Privada:')
