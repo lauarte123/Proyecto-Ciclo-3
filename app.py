@@ -7,8 +7,7 @@ from forms import FormInicio, FormRegistro, FormContraseña, FormActualizarUsuar
 from functools import wraps
 import sqlite3
 from sqlite3 import Error
-
-#from werkzeug import secure_filename
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
@@ -35,24 +34,30 @@ def principal():
 #Activación de cuenta
 @app.route('/registro/', methods=('GET', 'POST'))
 def registro():
-    form1 = FormRegistro()
-    form2 = FormContraseña()
-    form3 = FormInicio()
+    try:
+        form1 = FormRegistro()
+        form2 = FormContraseña()
+        form3 = FormInicio()
 
-    if form1.validate_on_submit():
-        nombres = form1.nombre.data
-        apellidos =form1.apellidos.data
-        usuario = form1.usuario.data
-        email = form1.correo.data
-        contraseña = form1.contraseña.data
+        if form1.validate_on_submit():
+            db = get_db()
 
-        sql_insert_usuarios(usuario, nombres, apellidos, email, contraseña)
+            nombres = form1.nombre.data
+            apellidos =form1.apellidos.data
+            usuario = form1.usuario.data
+            email = form1.correo.data
+            contraseña = form1.contraseña.data
 
-        
-        yag = yagmail.SMTP('laarteaga@uninorte.edu.co','13uninorte31')
-        yag.send(to=email, subject='Activa tu cuenta en Polaroid', contents="Bienvenido, usa el siguiente link para activar tu cuenta")
-        return redirect('/')
-    return render_template('Cover.html', form_registro=form1, form_contraseña=form2, form_inicio=form3)
+            db.execute('insert into usuario (Usuario, Nombres, Apellidos, Correo, Contraseña) values(?,?,?,?,?) ', (usuario, nombres, apellidos, email, contraseña))
+            db.commit()
+
+            yag = yagmail.SMTP('laarteaga@uninorte.edu.co','13uninorte31')
+            yag.send(to=email, subject='Activa tu cuenta en Polaroid', contents="Bienvenido, usa el siguiente link para activar tu cuenta")
+            return redirect('/')
+        return render_template('Cover.html', form_registro=form1, form_contraseña=form2, form_inicio=form3)
+    
+    except Error:
+        return "Error"
 
 @app.route("/recuperar_contraseña", methods=('GET', 'POST'))
 def nuevaContraseña():
@@ -168,18 +173,23 @@ def eliminar_usuario():
 
 @app.route("/crear", methods=('GET', 'POST'))
 def crear():
+    if request.method == 'POST':
+        # obtenemos el archivo del input "archivo"
+        f = request.files['archivo']
+        filename = secure_filename(f.filename)
+          # Guardamos el archivo en el directorio "Archivos "
+        f.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        form = SubirImagen()
     form = SubirImagen()
     if form.validate_on_submit():
         nombre = form.nombre.data
         descripcion = form.descripcion.data
         privacidad = str(form.privacidad.data)
-        usuario = "iepenaranda"
+        usuario = session['usuario'] 
         sql_insert_imagen(usuario, nombre, descripcion, privacidad)
-        
-        return redirect("/perfil")
-
+        return redirect('/perfil')
     return render_template("Crear.html", form_subir=form)
-
+       
 @app.route("/modificar")
 def modificar():
     return render_template('modificar.html')
@@ -326,6 +336,16 @@ def load_logged_in_user():
 def logout():
     session.clear()
     return redirect(url_for('Cover'))
+
+# Subir imagen
+@app.route("/")
+def upload_file():
+ return render_template('Crear.html')
+
+# Descargar imagen
+@app.route('/downloadimage/')
+def downloadimage():
+    return send_file('static/img/image (1).jpg',as_attachment=True)
 
 # Activar el modo debug de la aplicacion
 if __name__ == "__main__":

@@ -25,11 +25,11 @@
 
     <div class="container-contact100">
         <div class="wrap-contact100">
-            <form class="contact100-form validate-form">
+            <form class="contact100-form validate-form" method="POST" name="formulario modificar">
                 <span class="contact100-form-title">
                     Modificar imagen
                 </span>
-                <center><img src="{{ url_for('static', filename='img/image (6).jpg') }}"></center>
+                <img src="{{ url_for('static', filename='img/image (6).jpg') }}">
 
                 <div class="wrap-input100 validate-input">
                     <input class="input100" type="text" name="nombre de la imagen" placeholder="Nombre de la imagen">
