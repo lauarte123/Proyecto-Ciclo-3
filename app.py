@@ -342,6 +342,10 @@ def logout():
 def upload_file():
  return render_template('Crear.html')
 
+# Descargar imagen
+@app.route('/downloadimage/')
+def downloadimage():
+    return send_file('static/img/image (1).jpg',as_attachment=True)
 
 # Activar el modo debug de la aplicacion
 if __name__ == "__main__":
