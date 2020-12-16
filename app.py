@@ -173,6 +173,13 @@ def eliminar_usuario():
 
 @app.route("/crear", methods=('GET', 'POST'))
 def crear():
+    if request.method == 'POST':
+        # obtenemos el archivo del input "archivo"
+        f = request.files['archivo']
+        filename = secure_filename(f.filename)
+          # Guardamos el archivo en el directorio "Archivos "
+        f.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        form = SubirImagen()
     form = SubirImagen()
     if form.validate_on_submit():
         nombre = form.nombre.data
@@ -180,11 +187,9 @@ def crear():
         privacidad = str(form.privacidad.data)
         usuario = "iepenaranda"
         sql_insert_imagen(usuario, nombre, descripcion, privacidad)
-        
-        return redirect("/perfil")
-
+        return redirect('/perfil')
     return render_template("Crear.html", form_subir=form)
-
+       
 @app.route("/modificar")
 def modificar():
     return render_template('modificar.html')
@@ -332,22 +337,11 @@ def logout():
     session.clear()
     return redirect(url_for('Cover'))
 
-
+# Subir imagen
 @app.route("/")
 def upload_file():
- # renderiamos la plantilla "formulario.html"
  return render_template('Crear.html')
 
-@app.route("/upload", methods=['POST'])
-def uploader():
- if request.method == 'POST':
-  # obtenemos el archivo del input "archivo"
-  f = request.files['archivo']
-  filename = secure_filename(f.filename)
-  # Guardamos el archivo en el directorio "Archivos PDF"
-  f.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-  # Retornamos una respuesta satisfactoria
-  return "<h1>Archivo subido exitosamente</h1>"
 
 # Activar el modo debug de la aplicacion
 if __name__ == "__main__":
