@@ -185,7 +185,7 @@ def crear():
         nombre = form.nombre.data
         descripcion = form.descripcion.data
         privacidad = str(form.privacidad.data)
-        usuario = "iepenaranda"
+        usuario = session['usuario'] 
         sql_insert_imagen(usuario, nombre, descripcion, privacidad)
         return redirect('/perfil')
     return render_template("Crear.html", form_subir=form)
