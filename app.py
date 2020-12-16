@@ -7,8 +7,7 @@ from forms import FormInicio, FormRegistro, FormContraseña, FormActualizarUsuar
 from functools import wraps
 import sqlite3
 from sqlite3 import Error
-
-#from werkzeug import secure_filename
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
@@ -332,6 +331,23 @@ def load_logged_in_user():
 def logout():
     session.clear()
     return redirect(url_for('Cover'))
+
+
+@app.route("/")
+def upload_file():
+ # renderiamos la plantilla "formulario.html"
+ return render_template('Crear.html')
+
+@app.route("/upload", methods=['POST'])
+def uploader():
+ if request.method == 'POST':
+  # obtenemos el archivo del input "archivo"
+  f = request.files['archivo']
+  filename = secure_filename(f.filename)
+  # Guardamos el archivo en el directorio "Archivos PDF"
+  f.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+  # Retornamos una respuesta satisfactoria
+  return "<h1>Archivo subido exitosamente</h1>"
 
 # Activar el modo debug de la aplicacion
 if __name__ == "__main__":
