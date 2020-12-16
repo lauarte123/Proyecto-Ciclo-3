@@ -23,8 +23,17 @@ def login_required(view):
         return view(*args, **kwds)
     return wrapped_view
 
+@app.route('/')
+def principal():
+    form1 = FormRegistro()
+    form2 = FormContraseña()
+    form3 = FormInicio()
+    if g.user:
+        return redirect( url_for( 'perfil' ) )
+    return render_template('Cover.html', form_registro=form1, form_contraseña=form2, form_inicio=form3)
+
 #Activación de cuenta
-@app.route("/", methods=('GET', 'POST'))
+@app.route('/registro/', methods=('GET', 'POST'))
 def registro():
     form1 = FormRegistro()
     form2 = FormContraseña()
@@ -302,14 +311,15 @@ def sql_delete_imagen(id):
     except Error:
         print(Error)
 
+
 @app.before_request
 def load_logged_in_user():
     usuario = session.get('usuario') 
-    
     if usuario is None:
         g.user = None
     else:
         g.user = get_db().execute('SELECT * FROM usuario WHERE usuario = ?', (usuario,)).fetchone()
+
 
 # Limpia la variable de sesión y redirige a la página principal
 @app.route('/logout')
