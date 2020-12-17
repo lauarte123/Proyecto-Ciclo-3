@@ -56,7 +56,7 @@ def registro():
             db.commit()
 
             yag = yagmail.SMTP('laarteaga@uninorte.edu.co','13uninorte31')
-            yag.send(to=email, subject='Activa tu cuenta en Polaroid', contents="Bienvenido, usa el siguiente link para activar tu cuenta")
+            #yag.send(to=email, subject='Activa tu cuenta en Polaroid', contents="Bienvenido, usa el siguiente link para activar tu cuenta")
             return redirect('/')
         return render_template('Cover.html', form_registro=form1, form_contraseña=form2, form_inicio=form3)
     
