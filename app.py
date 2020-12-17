@@ -61,7 +61,7 @@ def registro():
             db.commit()
 
             yag = yagmail.SMTP('laarteaga@uninorte.edu.co','13uninorte31')
-            #yag.send(to=email, subject='Activa tu cuenta en Polaroid', contents="Bienvenido, usa el siguiente link para activar tu cuenta")
+            yag.send(to=email, subject="Activa tu cuenta en Polaroid", contents="Bienvenido, usa el siguiente link para activar tu cuenta")
             return redirect('/')
         return render_template('Cover.html', form_registro=form1, form_contraseña=form2, form_inicio=form3)
     
@@ -74,19 +74,34 @@ def nuevaContraseña():
     form2 = FormContraseña()
     form3 = FormInicio()
     if form2.validate_on_submit():
+
+        db = get_db()
         usuario = form2.usuario.data
         email = form2.correo.data
-        listaUsuario = sql_select_usuarios()
-        tamañoLista=len(listaUsuario)
-        for i in range (tamañoLista):
-            if usuario==listaUsuario[i][0] and email==listaUsuario[i][3]:
-                yag = yagmail.SMTP('laarteaga@uninorte.edu.co','13uninorte31')
-                yag.send(to=email, subject='Recuperación de contraseña', contents="Hola, haz clic en el siguiente enlace para recuperar tu contraseña")
-                return redirect('/')
-            else:
-                continue
-        return ("Usuario no encontrado")
+        error = None
+        user = db.execute('SELECT * FROM usuario WHERE usuario = ?', (usuario,)).fetchone()
+
+        if user is None:
+            error = "Usuario inválido"
+        else:
+            correo = user['Correo']
+            yag = yagmail.SMTP('laarteaga@uninorte.edu.co','13uninorte31')
+            yag.send(to=str(correo), subject="POLAROID: Recuperación de contraseña", contents="Hola, haz clic en el siguiente enlace para recuperar tu contraseña")
+            return redirect('/')
         
+        return error
+
+        #listaUsuario = sql_select_usuarios()
+        #tamañoLista=len(listaUsuario)
+
+        #for i in range (tamañoLista):
+            #if usuario==listaUsuario[i][0] and email==listaUsuario[i][3]:
+                #yag = yagmail.SMTP('laarteaga@uninorte.edu.co','13uninorte31')
+                #yag.send(to=email, subject='Recuperación de contraseña', contents="Hola, haz clic en el siguiente enlace para recuperar tu contraseña")
+                #return redirect('/')
+            #else:
+                #continue
+        #return ("Usuario no encontrado")
         
     return render_template('Cover.html', form_registro=form1, form_contraseña=form2, form_inicio=form3)
     
