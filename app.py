@@ -185,11 +185,53 @@ def eliminar_usuario():
                 continue
     return redirect('/perfil')
 
+@app.route('/buscar/<string:busqueda>/', methods=('GET', 'POST'))
+def buscar(busqueda):
+    if request.method == "POST":
+        postInput = request.form.get("busqueda")
+        return render_template('search.html', busqueda=postInput)
+    elif request.method == "GET":
+        return render_template('search.html', busqueda=busqueda)
+
 ### Visualizar imágenes y rutas guardadas en Archivos
-@app.route('/verArchivos/')
+# @app.route('/verArchivos/')
+# def ver():
+#     # files = os.listdir(app.config['UPLOAD_PATH'])
+#     return render_template('ver.html', files=files)
+
+@app.route('/verArchivos/', methods=('GET', 'POST'))
 def ver():
-    files = os.listdir(app.config['UPLOAD_PATH'])
-    return render_template('ver.html', files=files)
+    # files = os.listdir(app.config['UPLOAD_PATH'])
+    if request.method == 'GET':
+        return redirect('/perfil')
+    else:
+        try:
+            db = get_db()
+            entrada = request.form.get("busqueda")
+            consulta = sql_select_imagenes()
+            r = []
+            files = []
+            files2 = []
+            files3 = []
+            for row in consulta:
+                descripciones = row[3]
+                rutas = row[5]
+                files.append(descripciones)
+                r.append(rutas)
+            for e in range(len(files)):
+                palabra = files[e].split(", ")
+                # files2.append(r[e])
+                palabra.insert(0, r[e])
+                files2.append(palabra)
+            for i in range(len(files2)):
+                for j in range(len(files2[i])):
+                    if entrada == files2[i][j]:
+                        files3.append(files2[i])
+            
+            return render_template('ver.html', files=files3)
+        except Error:
+            return Error
+    
 
 ###
 @app.route('/uploads/<filename>')
@@ -206,6 +248,7 @@ def validate_image(stream):
     return '.' + (format if format != 'jpeg' else 'jpg')
 
 @app.route("/crear/", methods=('GET', 'POST'))
+@login_required
 def crear():
     form = SubirImagen()
     if request.method == 'GET':
@@ -221,12 +264,19 @@ def crear():
             f.save(os.path.join(app.config['UPLOAD_FOLDER'], filename)) # Guardamos el archivo en el directorio "Archivos "
         
         if form.validate_on_submit():
-            nombre = form.nombre.data
-            descripcion = form.descripcion.data
-            privacidad = str(form.privacidad.data)
-            usuario = session['usuario'] 
-            sql_insert_imagen(usuario, nombre, descripcion, privacidad, filename)
-            return redirect('/perfil')
+            try:
+                db = get_db()
+                nombre = form.nombre.data
+                descripcion = form.descripcion.data
+                privacidad = str(form.privacidad.data)
+                usuario = session['usuario'] 
+
+                db.execute('INSERT INTO Imagen (Id_usuario, Nombre_imagen, Descripcion, Privada, Ruta) values(?,?,?,?,?)', (usuario, nombre, descripcion, privacidad, filename))
+                db.commit()
+                return redirect('/perfil')
+            except Error:
+                return Error
+
     return render_template("Crear.html", form_subir=form)
 
 
@@ -234,13 +284,7 @@ def crear():
 def modificar():
     return render_template('modificar.html')
 
-@app.route('/buscar/<string:busqueda>/', methods=('GET', 'POST'))
-def buscar(busqueda):
-    if request.method == "POST":
-        postInput = request.form.get("busqueda")
-        return render_template('search.html', busqueda=postInput)
-    elif request.method == "GET":
-        return render_template('search.html', busqueda=busqueda)
+
 
 ### CONEXIÓN A BASE DE DATOS ###
 
