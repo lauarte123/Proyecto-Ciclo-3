@@ -147,10 +147,9 @@ def perfil():
     form1 = FormActualizarUsuario()
     form2 = FormEliminarUsuario()
     db = get_db()
-    nombre = g.user['Nombres']
-    correo = g.user['Correo']
-
-    if request.method == 'POST':
+    if g.user:
+        nombre = g.user['Nombres']
+        correo = g.user['Correo']
         usuario = request.cookies.get('usuario')
         return render_template('Profile.html', nombre=nombre, correo=correo, form_actualizar_usuario=form1, form_eliminar_usuario=form2)
 
