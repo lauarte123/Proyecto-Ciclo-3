@@ -160,23 +160,44 @@ def perfil():
 def actualizarInformacion():
     form = FormActualizarUsuario()
     if form.validate_on_submit():
+        db = get_db()
+
+        usuario = request.cookies.get('usuario')
+
         nombres = form.nombre.data
-        apellidos =form.apellidos.data
-        usuario = form.usuario.data
-        email = form.correo.data
+        apellidos = form.apellidos.data
+        usuarioN = form.usuario.data
+        correo = form.correo.data
         contraseñaAnterior = form.contraseñaAnterior.data
         contraseñaNueva = form.contraseñaNueva.data
-        #Validación datos usuario
-        listaUsuario = sql_select_usuarios()
-        tamañoLista=len(listaUsuario)
-        for i in range (tamañoLista):
-            if usuario == listaUsuario[i][0] and contraseñaAnterior == listaUsuario[i][4]:
-                sql_edit_usuarios(usuario, nombres, apellidos, email, contraseñaNueva)
-                mensaje = 'Su información de ha sido actualizada correctamente'
-                flash(mensaje)
-                return redirect('/perfil')
-            else:
-                continue
+        user = db.execute('SELECT * FROM Usuario WHERE Usuario = ?', (usuario, )).fetchone()
+
+        # Validación de contraseñaAnterior con la guardada en base de datos
+        if check_password_hash(user['Contraseña'], contraseñaAnterior):
+            # Validación datos usuario
+            hash_contraseña = generate_password_hash(contraseñaNueva)
+            new_user = db.execute(
+                'UPDATE Usuario SET Usuario=?, Nombres=?, Apellidos=?, Correo=?, Contraseña=? WHERE usuario=?',
+                (usuarioN, nombres, apellidos, correo, hash_contraseña, usuario))
+            db.commit()
+            mensaje = 'Su información ha sido actualizada correctamente'
+            flash(mensaje)
+            return redirect('/perfil')
+        else:
+            mensaje = 'Contraseña incorrecta, no se puede cambiar los datos'
+            flash(mensaje)
+            return redirect('/perfil')
+
+        #listaUsuario = sql_select_usuarios()
+        #tamañoLista=len(listaUsuario)
+        #for i in range (tamañoLista):
+        #    if usuario == listaUsuario[i][0] and contraseñaAnterior == listaUsuario[i][4]:
+        #        sql_edit_usuarios(usuario, nombres, apellidos, email, contraseñaNueva)
+        #        mensaje = 'Su información de ha sido actualizada correctamente'
+        #        flash(mensaje)
+        #        return redirect('/perfil')
+        #    else:
+        #        continue
     return redirect('/perfil')
         
 
