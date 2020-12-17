@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, session, current_app, g, send_file, make_response
+from flask import Flask, render_template, request, redirect, url_for, flash, session, current_app, g, send_file, make_response, send_from_directory
 import os, functools
 import yagmail as yagmail
 import utils
@@ -14,6 +14,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
 app.config['UPLOAD_FOLDER'] = "./Archivos"
+app.config['UPLOAD_PATH'] = 'Archivos'
 
 #Función decoradora para validar el login
 def login_required(view):
@@ -180,9 +181,22 @@ def eliminar_usuario():
                 continue
     return redirect('/perfil')
 
+### Visualizar imágenes y rutas guardadas en Archivos
+@app.route('/verArchivos/')
+def ver():
+    files = os.listdir(app.config['UPLOAD_PATH'])
+    return render_template('ver.html', files=files)
 
-@app.route("/crear", methods=('GET', 'POST'))
+###
+@app.route('/uploads/<filename>')
+def upload(filename):
+    return send_from_directory(app.config['UPLOAD_PATH'], filename)
+
+@app.route("/crear/", methods=('GET', 'POST'))
 def crear():
+    form = SubirImagen()
+    if request.method == 'GET':
+        return render_template("Crear.html", form_subir=form)
     if request.method == 'POST':
         # obtenemos el archivo del input "archivo"
         f = request.files['archivo']
@@ -190,7 +204,6 @@ def crear():
           # Guardamos el archivo en el directorio "Archivos "
         f.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         form = SubirImagen()
-    form = SubirImagen()
     if form.validate_on_submit():
         nombre = form.nombre.data
         descripcion = form.descripcion.data
