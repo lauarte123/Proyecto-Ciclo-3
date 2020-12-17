@@ -1,7 +1,9 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, session, current_app, g, send_file, make_response, send_from_directory
+from flask import Flask, render_template, request, redirect, url_for, \
+    flash, session, current_app, g, send_file, make_response, send_from_directory, \
+    abort
 import os, functools
 import yagmail as yagmail
-import utils
+import utils, imghdr
 from db import get_db, close_db
 from forms import FormInicio, FormRegistro, FormContraseña, FormActualizarUsuario, FormEliminarUsuario, SubirImagen, ActualizarImagen
 from functools import wraps
@@ -15,6 +17,8 @@ app = Flask(__name__)
 app.secret_key = os.urandom(24)
 app.config['UPLOAD_FOLDER'] = "./Archivos"
 app.config['UPLOAD_PATH'] = 'Archivos'
+app.config['MAX_CONTENT_LENGTH'] = 7 * 1024 * 1024
+app.config['UPLOAD_EXTENSIONS'] = ['.jpg', '.png', '.gif', '.PNG','.JPG','.GIF']
 
 #Función decoradora para validar el login
 def login_required(view):
@@ -192,27 +196,40 @@ def ver():
 def upload(filename):
     return send_from_directory(app.config['UPLOAD_PATH'], filename)
 
+### Validación de la imagen
+def validate_image(stream):
+    header = stream.read(512)  # 512 bytes should be enough for a header check
+    stream.seek(0)  # reset stream pointer
+    format = imghdr.what(None, header)
+    if not format:
+        return None
+    return '.' + (format if format != 'jpeg' else 'jpg')
+
 @app.route("/crear/", methods=('GET', 'POST'))
 def crear():
     form = SubirImagen()
     if request.method == 'GET':
         return render_template("Crear.html", form_subir=form)
-    if request.method == 'POST':
-        # obtenemos el archivo del input "archivo"
-        f = request.files['archivo']
+    else:
+        f = request.files['archivo']  # obtenemos el archivo del input "archivo"
         filename = secure_filename(f.filename)
-          # Guardamos el archivo en el directorio "Archivos "
-        f.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        form = SubirImagen()
-    if form.validate_on_submit():
-        nombre = form.nombre.data
-        descripcion = form.descripcion.data
-        privacidad = str(form.privacidad.data)
-        usuario = session['usuario'] 
-        sql_insert_imagen(usuario, nombre, descripcion, privacidad)
-        return redirect('/perfil')
+        if filename != '':
+            file_ext = os.path.splitext(filename)[1]
+            if file_ext not in app.config['UPLOAD_EXTENSIONS'] or \
+                file_ext != validate_image(f.stream): 
+                return "Invalid image", 400    
+            f.save(os.path.join(app.config['UPLOAD_FOLDER'], filename)) # Guardamos el archivo en el directorio "Archivos "
+        
+        if form.validate_on_submit():
+            nombre = form.nombre.data
+            descripcion = form.descripcion.data
+            privacidad = str(form.privacidad.data)
+            usuario = session['usuario'] 
+            sql_insert_imagen(usuario, nombre, descripcion, privacidad, filename)
+            return redirect('/perfil')
     return render_template("Crear.html", form_subir=form)
-       
+
+
 @app.route("/modificar")
 def modificar():
     return render_template('modificar.html')
@@ -287,8 +304,8 @@ def sql_delete_usuarios(usuario):
 
 
 #------------- CRUD de las imágenes  --------------------
-def sql_insert_imagen(id_usuario, nombre, ruta, privada):
-    query = "INSERT INTO Imagen (Id_usuario, Nombre_imagen, Ruta_guardar, Privada) VALUES ('"+id_usuario+"','"+nombre+"','"+ruta+"',"+privada+");"
+def sql_insert_imagen(id_usuario, nombre, descripcion, privada, ruta):
+    query = "INSERT INTO Imagen (Id_usuario, Nombre_imagen, Descripcion, Privada, Ruta) VALUES ('"+id_usuario+"','"+nombre+"','"+descripcion+"',"+privada+",'"+ruta+"');"
     try:
         con = sql_connection()
         cursorObj = con.cursor()
