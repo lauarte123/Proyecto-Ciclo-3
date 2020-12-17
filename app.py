@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, session, current_app, g, send_file
+from flask import Flask, render_template, request, redirect, url_for, flash, session, current_app, g, send_file, make_response
 import os, functools
 import yagmail as yagmail
 import utils
@@ -8,6 +8,8 @@ from functools import wraps
 import sqlite3
 from sqlite3 import Error
 from werkzeug.utils import secure_filename
+from werkzeug.security import generate_password_hash, check_password_hash
+
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
@@ -43,12 +45,14 @@ def registro():
             db = get_db()
 
             nombres = form1.nombre.data
-            apellidos =form1.apellidos.data
+            apellidos = form1.apellidos.data
             usuario = form1.usuario.data
             email = form1.correo.data
             contraseña = form1.contraseña.data
 
-            db.execute('insert into usuario (Usuario, Nombres, Apellidos, Correo, Contraseña) values(?,?,?,?,?) ', (usuario, nombres, apellidos, email, contraseña))
+            hash_contraseña = generate_password_hash(contraseña)
+
+            db.execute('insert into usuario (Usuario, Nombres, Apellidos, Correo, Contraseña) values(?,?,?,?,?)', (usuario, nombres, apellidos, email, hash_contraseña))
             db.commit()
 
             yag = yagmail.SMTP('laarteaga@uninorte.edu.co','13uninorte31')
@@ -57,7 +61,7 @@ def registro():
         return render_template('Cover.html', form_registro=form1, form_contraseña=form2, form_inicio=form3)
     
     except Error:
-        return "Error"
+        return Error
 
 @app.route("/recuperar_contraseña", methods=('GET', 'POST'))
 def nuevaContraseña():
@@ -103,9 +107,12 @@ def login():
             if user is None:
                 error = 'Usuario o contraseña inválidos'
             else:
-                session.clear()
-                session['usuario'] = user[0]
-                return redirect(url_for('perfil'))
+                if check_password_hash(user['Contraseña'], contraseña):
+                    session.clear()
+                    session['usuario'] = user[0]
+                    resp = make_response(redirect( url_for('perfil') ))
+                    resp.set_cookie('usuario', usuario)
+                    return resp
             flash(error)
         return render_template('Cover.html', form_registro=form1, form_contraseña=form2, form_inicio=form3)
     except Error:
@@ -122,9 +129,12 @@ def perfil():
     db = get_db()
     nombre = g.user['Nombres']
     correo = g.user['Correo']
+
+    if request.method == 'POST':
+        usuario = request.cookies.get('usuario')
+        return render_template('Profile.html', nombre=nombre, correo=correo, form_actualizar_usuario=form1, form_eliminar_usuario=form2)
+
     return render_template('Profile.html', nombre=nombre, correo=correo, form_actualizar_usuario=form1, form_eliminar_usuario=form2)
-
-
 
 
 @app.route("/actualizarInformacion", methods=('GET', 'POST'))
@@ -335,7 +345,7 @@ def load_logged_in_user():
 @app.route('/logout')
 def logout():
     session.clear()
-    return redirect(url_for('Cover'))
+    return redirect(url_for('principal'))
 
 # Subir imagen
 @app.route("/")

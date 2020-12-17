@@ -32,6 +32,11 @@
                 <input type="text" name="busqueda" placeholder="Realiza tu búsqueda"/>
                 <button type="button">Buscar</button>
             </span>
+
+            <form action="{{ url_for('logout') }}">
+                <button type="logout">Cerrar Sesión</button>
+            </form>
+            
         </div>
         <div class="contenedor">
             <!--<h2>Información de Usuario</h2> -->
