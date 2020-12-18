@@ -151,9 +151,31 @@ def perfil():
         nombre = g.user['Nombres']
         correo = g.user['Correo']
         usuario = request.cookies.get('usuario')
-        return render_template('Profile.html', nombre=nombre, correo=correo, form_actualizar_usuario=form1, form_eliminar_usuario=form2)
+        usuario2 = session['usuario'] 
+        consulta = sql_select_imagenes()
+        r1 = []
+        files5 = []
+        files6 = []
+        files7 = []
+        b= []
+        for row in consulta:
+            id_usario = row[1]
+            ruta = row[5]
+            files5.append(id_usario)
+            r1.append(ruta)
+            for e in range(len(files5)):
+                palabra2 = files5[e].split(", ")
+                palabra2.insert(0, r1[e])
+                files6.append(palabra2)
+                for i in range(len(files6)):
+                    for j in range(len(files6[i])):
+                        if usuario2 == files6[i][j]:
+                            files7.append(files6[i][0])
+                            b= set(files7)
 
-    return render_template('Profile.html', nombre=nombre, correo=correo, form_actualizar_usuario=form1, form_eliminar_usuario=form2)
+        return render_template('Profile.html', nombre=nombre, correo=correo, form_actualizar_usuario=form1, form_eliminar_usuario=form2,este=b)
+
+    return render_template('Profile.html', nombre=nombre, correo=correo, form_actualizar_usuario=form1, form_eliminar_usuario=form2,este=b)
 
 
 @app.route("/actualizarInformacion", methods=('GET', 'POST'))
