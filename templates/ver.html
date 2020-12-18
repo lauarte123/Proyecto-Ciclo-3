@@ -1,19 +1,62 @@
-<!doctype html>
 <html>
-  <head>
-    <title>File Upload</title>
-  </head>
-  <body>
-    <h1>File Upload</h1>
-    <!-- <form method="POST" action="" enctype="multipart/form-data">
-      <p><input type="file" name="file"></p>
-      <p><input type="submit" value="Submit"></p>
-    </form>
-    <hr> -->
-    <!-- <img src="{{ url_for('upload', filename=file) }}" style="width: 64px"> -->
+    <head>
+        <title>search</title>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/search_style.css')}}">
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&family=Orienta&display=swap" rel="stylesheet">
+    </head>
     
-      
-      <h3> {{ files }} </h3>
+    <body>
+        <div class="banner">
+            <span class="search-bar">
+                <form action="{{ url_for('ver') }}" method="POST">
+                    <input type="text" name="busqueda"/>
+                    <button type="submit"><i class="fas fa-search"></i></button>
+                </form>
+            </span>
+            <span class="profile">
+                <form action="{{ url_for('perfil') }}">
+                    <button type="submit"><i class="fas fa-user-circle"></i></button>
+                </form>
+                <!-- <a href="{{ url_for('perfil') }}"></a> -->
+            </span> 
+            <span class="upload">
+                <form action="{{ url_for('crear') }}">
+                    <button type="submit"><i class="fas fa-upload"></i>
+                        <span style="margin-left: 4px">Subir imagen</span>
+                    </button>
+                </form>
+            </span>
+        </div>
+
+        <div>
+            <h1>{{ entrada }}</h1>
+            
+        </div>
+        
+        
+        <section class="galeria">
+            <!-- #image# es el target para animarlas -->
+            {% for file in files %}
+            <a href="#{{ file }}">
+              <img src="{{ url_for('upload', filename=file) }}">
+            </a>
+            {% endfor %}
+
+        </section>
+        
+        {% for file in files %}
+        <article class="light-box" id="{{ file }}">  
+            <img src="{{ url_for('upload', filename=file) }}">
+            <a href="#" class="close">X</a>
+            <a href= '{{ "/uploads/" ~ file }}' download> Descargar </a>
+        </article>
+        {% endfor %}
+
+        <script src="https://kit.fontawesome.com/3730109e88.js" crossorigin="anonymous"></script>
+    </body>
     
-  </body>
+    
+     
 </html>

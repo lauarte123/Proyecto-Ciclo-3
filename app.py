@@ -220,7 +220,7 @@ def eliminar_usuario():
                 continue
     return redirect('/perfil')
 
-### Visualizar imágenes y rutas guardadas en Archivos
+# ### Visualizar imágenes y rutas guardadas en Archivos
 # @app.route('/verArchivos/')
 # def ver():
 #     files = os.listdir(app.config['UPLOAD_PATH'])
@@ -232,35 +232,44 @@ def ver():
         return redirect('/perfil')
     else:
         try:
-            db = get_db()
-            entrada = request.form.get("busqueda")
-            consulta = sql_select_imagenes()
-            r = []
-            files = []
-            files2 = []
-            files3 = []
-            for row in consulta:
-                descripciones = row[3]
-                rutas = row[5]
-                files.append(descripciones)
-                r.append(rutas)
-            for e in range(len(files)):
-                palabra = files[e].split(", ")
-                # files2.append(r[e])
-                palabra.insert(0, r[e])
-                files2.append(palabra)
-            for i in range(len(files2)):
-                for j in range(len(files2[i])):
-                    if entrada == files2[i][j]:
-                        files3.append(files2[i])
+            
+            busqueda = request.form.get("busqueda")
+            entrada = busqueda.casefold()
 
-            return render_template('ver.html', files=files3)
+            if not entrada:
+                files3 = os.listdir(app.config['UPLOAD_PATH'])
+                
+            else:
+                db = get_db()
+                consulta = sql_select_imagenes()
+                r = []
+                files = []
+                files2 = []
+                files3 = []
+                for row in consulta:
+                    descripciones = row[3]
+                    rutas = row[5]
+                    files.append(descripciones)
+                    r.append(rutas)
+                for e in range(len(files)):
+                    palabra = files[e].split(", ")
+                    # files2.append(r[e])
+                    palabra.insert(0, r[e])
+                    files2.append(palabra)
+                for i in range(len(files2)):
+                    for j in range(len(files2[i])):
+                        if entrada == files2[i][j]:
+                            files3.append(files2[i][0])
+
+            return render_template('ver.html', files=files3, entrada=busqueda)
         except Error:
             return Error
 ###
 @app.route('/uploads/<filename>')
 def upload(filename):
     return send_from_directory(app.config['UPLOAD_PATH'], filename)
+
+
 
 ### Validación de la imagen
 def validate_image(stream):
@@ -456,8 +465,13 @@ def upload_file():
 # Descargar imagen
 @app.route('/downloadimage/')
 def downloadimage():
-    return send_file('static/img/image (1).jpg',as_attachment=True)
+    
+    filename = request.form.get("boton")
+    if filename:
+        ruta = os.path.join(app.config['UPLOAD_PATH'], filename)
+    return send_file(ruta, as_attachment=True)
 
+# (app.config['UPLOAD_PATH'], filename)
 # Activar el modo debug de la aplicacion
 if __name__ == "__main__":
     app.run(debug=True)

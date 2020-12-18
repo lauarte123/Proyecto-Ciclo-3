@@ -46,60 +46,21 @@
             <!-- #image# es el target para animarlas -->
             <a href="#image1">
                 <img src="{{ url_for('static', filename='img/image (1).jpg')}}" alt=""></a>
-            <a href="#image2">
-                <img src="{{ url_for('static', filename='img/image (2).jpg')}}" alt=""></a>
-            <a href="#image3">
-                <img src="{{ url_for('static', filename='img/image (3).jpg')}}" alt=""></a>
-            <a href="#image4">
-                <img src="{{ url_for('static', filename='img/image (4).jpg')}}" alt=""></a>
-            <a href="#image5">
-                <img src="{{ url_for('static', filename='img/image (5).jpg')}}" alt=""></a>
-            <a href="#image6">
-                <img src="{{ url_for('static', filename='img/image (6).jpg')}}" alt=""></a>
+            
 
         </section>
 
         <article class="light-box" id="image1">
-            <a href="#image6" class="next"><i class="fas fa-arrow-left"></i></a>
-            <img src="{{ url_for('static', filename='img/image (1).jpg')}}" alt="">
-            <a href="#image2" class="next"><i class="fas fa-arrow-right"></i></a>
+        
+            {% for file in files %}
+                <img src="{{ url_for('upload', filename=file) }}">
+            {% endfor %}
+
+            <!-- <img src="{{ url_for('static', filename='img/image (1).jpg')}}" alt=""> -->
+            
             <a href="#" class="close">X</a>
         </article>
 
-        <article class="light-box" id="image2">
-            <a href="#image1" class="next"><i class="fas fa-arrow-left"></i></a>
-            <img src="{{ url_for('static', filename='img/image (2).jpg')}}" alt="">
-            <a href="#image3" class="next"><i class="fas fa-arrow-right"></i></a>
-            <a href="#" class="close">X</a>
-        </article>
-
-        <article class="light-box" id="image3">
-            <a href="#image2" class="next"><i class="fas fa-arrow-left"></i></a>
-            <img src="{{ url_for('static', filename='img/image (3).jpg')}}" alt="">
-            <a href="#image4" class="next"><i class="fas fa-arrow-right"></i></a>
-            <a href="#" class="close">X</a>
-        </article>
-
-        <article class="light-box" id="image4">
-            <a href="#image3" class="next"><i class="fas fa-arrow-left"></i></a>
-            <img src="{{ url_for('static', filename='img/image (4).jpg')}}" alt="">
-            <a href="#image5" class="next"><i class="fas fa-arrow-right"></i></a>
-            <a href="#" class="close">X</a>
-        </article>
-
-        <article class="light-box" id="image5">
-            <a href="#image4" class="next"><i class="fas fa-arrow-left"></i></a>
-            <img src="{{ url_for('static', filename='img/image (5).jpg')}}" alt="">
-            <a href="#image6" class="next"><i class="fas fa-arrow-right"></i></a>
-            <a href="#" class="close">X</a>
-        </article>
-
-        <article class="light-box" id="image6">
-            <a href="#image5" class="next"><i class="fas fa-arrow-left"></i></a>
-            <img src="{{ url_for('static', filename='img/image (6).jpg')}}" alt="">
-            <a href="#image1" class="next"><i class="fas fa-arrow-right"></i></a>
-            <a href="#" class="close">X</a>
-        </article>
 
         <script src="https://kit.fontawesome.com/3730109e88.js" crossorigin="anonymous"></script>
     </body>
