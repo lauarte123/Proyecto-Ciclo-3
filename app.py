@@ -14,7 +14,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 
 app = Flask(__name__)
-app.secret_key = os.urandom(24)
+app.secret_key = "D*G-KaPdSgVkYp3s5v8y/B?E(H+MbQeT"
 app.config['UPLOAD_FOLDER'] = "./Archivos"
 app.config['UPLOAD_PATH'] = 'Archivos'
 app.config['MAX_CONTENT_LENGTH'] = 7 * 1024 * 1024
@@ -457,4 +457,7 @@ def downloadimage():
 # (app.config['UPLOAD_PATH'], filename)
 # Activar el modo debug de la aplicacion
 if __name__ == "__main__":
-    app.run(host='127.0.0.1', port=443, ssl_context=('micertificado.pem','llaveprivada.pem'), debug=True)
+    app.run(host='0.0.0.0', port=80, debug=True)
+
+#if __name__ == "__main__":
+#    app.run(host='127.0.0.1', port=443, ssl_context=('micertificado.pem','llaveprivada.pem'), debug=True)
