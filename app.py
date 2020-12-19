@@ -57,7 +57,7 @@ def registro():
 
             hash_contraseña = generate_password_hash(contraseña)
 
-            db.execute('insert into usuario (Usuario, Nombres, Apellidos, Correo, Contraseña) values(?,?,?,?,?)', (usuario, nombres, apellidos, email, hash_contraseña))
+            db.execute('INSERT INTO Usuario (Usuario, Nombres, Apellidos, Correo, Contraseña) values(?,?,?,?,?)', (usuario, nombres, apellidos, email, hash_contraseña))
             db.commit()
 
             yag = yagmail.SMTP('laarteaga@uninorte.edu.co','13uninorte31')
@@ -90,18 +90,6 @@ def nuevaContraseña():
             return redirect('/')
         
         return error
-
-        #listaUsuario = sql_select_usuarios()
-        #tamañoLista=len(listaUsuario)
-
-        #for i in range (tamañoLista):
-            #if usuario==listaUsuario[i][0] and email==listaUsuario[i][3]:
-                #yag = yagmail.SMTP('laarteaga@uninorte.edu.co','13uninorte31')
-                #yag.send(to=email, subject='Recuperación de contraseña', contents="Hola, haz clic en el siguiente enlace para recuperar tu contraseña")
-                #return redirect('/')
-            #else:
-                #continue
-        #return ("Usuario no encontrado")
         
     return render_template('Cover.html', form_registro=form1, form_contraseña=form2, form_inicio=form3)
     
@@ -146,36 +134,19 @@ def login():
 def perfil():
     form1 = FormActualizarUsuario()
     form2 = FormEliminarUsuario()
+    usuario = request.cookies.get('usuario')
     db = get_db()
+    rutas = []
+    imagenes = db.execute("SELECT * FROM Imagen WHERE Id_usuario = ?",(usuario, )).fetchall()
+    for i in imagenes:
+        rutas.append(i[5])
+
     if g.user:
         nombre = g.user['Nombres']
         correo = g.user['Correo']
-        usuario = request.cookies.get('usuario')
-        usuario2 = session['usuario'] 
-        consulta = sql_select_imagenes()
-        r1 = []
-        files5 = []
-        files6 = []
-        files7 = []
-        b= []
-        for row in consulta:
-            id_usario = row[1]
-            ruta = row[5]
-            files5.append(id_usario)
-            r1.append(ruta)
-            for e in range(len(files5)):
-                palabra2 = files5[e].split(", ")
-                palabra2.insert(0, r1[e])
-                files6.append(palabra2)
-                for i in range(len(files6)):
-                    for j in range(len(files6[i])):
-                        if usuario2 == files6[i][j]:
-                            files7.append(files6[i][0])
-                            b= set(files7)
+        return render_template('Profile.html', este=rutas, nombre=nombre, correo=correo, form_actualizar_usuario=form1, form_eliminar_usuario=form2)
 
-        return render_template('Profile.html', nombre=nombre, correo=correo, form_actualizar_usuario=form1, form_eliminar_usuario=form2,este=b)
-
-    return render_template('Profile.html', nombre=nombre, correo=correo, form_actualizar_usuario=form1, form_eliminar_usuario=form2,este=b)
+    return render_template('Profile.html', este=rutas,  nombre=nombre, correo=correo, form_actualizar_usuario=form1, form_eliminar_usuario=form2)
 
 
 @app.route("/actualizarInformacion", methods=('GET', 'POST'))
@@ -210,16 +181,6 @@ def actualizarInformacion():
             flash(mensaje)
             return redirect('/perfil')
 
-        #listaUsuario = sql_select_usuarios()
-        #tamañoLista=len(listaUsuario)
-        #for i in range (tamañoLista):
-        #    if usuario == listaUsuario[i][0] and contraseñaAnterior == listaUsuario[i][4]:
-        #        sql_edit_usuarios(usuario, nombres, apellidos, email, contraseñaNueva)
-        #        mensaje = 'Su información de ha sido actualizada correctamente'
-        #        flash(mensaje)
-        #        return redirect('/perfil')
-        #    else:
-        #        continue
     return redirect('/perfil')
         
 
