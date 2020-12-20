@@ -136,17 +136,14 @@ def perfil():
     form2 = FormEliminarUsuario()
     usuario = request.cookies.get('usuario')
     db = get_db()
-    rutas = []
     imagenes = db.execute("SELECT * FROM Imagen WHERE Id_usuario = ?",(usuario, )).fetchall()
-    for i in imagenes:
-        rutas.append(i[5])
 
     if g.user:
         nombre = g.user['Nombres']
         correo = g.user['Correo']
-        return render_template('Profile.html', este=rutas, nombre=nombre, correo=correo, form_actualizar_usuario=form1, form_eliminar_usuario=form2)
+        return render_template('Profile.html', este=imagenes, nombre=nombre, correo=correo, form_actualizar_usuario=form1, form_eliminar_usuario=form2)
 
-    return render_template('Profile.html', este=rutas,  nombre=nombre, correo=correo, form_actualizar_usuario=form1, form_eliminar_usuario=form2)
+    return render_template('Profile.html', este=imagenes, idimagen=id_imagenes, nombre=nombre, correo=correo, form_actualizar_usuario=form1, form_eliminar_usuario=form2)
 
 
 @app.route("/actualizarInformacion", methods=('GET', 'POST'))
@@ -288,14 +285,60 @@ def crear():
                 usuario = session['usuario'] 
                 db.execute('INSERT INTO Imagen (Id_usuario, Nombre_imagen, Descripcion, Privada, Ruta) values(?,?,?,?,?)', (usuario, nombre, descripcion, privacidad, filename))     
                 db.commit()
+                flash('la imagen se ha subido exitosamente')
                 return redirect('/perfil')
             except Error:
                 return Error
 
 
-@app.route("/modificar")
-def modificar():
-    return render_template('modificar.html')
+@app.route("/modificar/<id>")
+def modificar(id):
+    query = "SELECT * FROM Imagen WHERE Id_imagen="+id+";"
+    try:
+        con = sql_connection()
+        cursorObj = con.cursor()
+        cursorObj.execute(query)
+        imagen = cursorObj.fetchall()
+        con.close()
+        return render_template("modificar.html", contact = imagen[0])
+    except Error:
+        print(Error)
+@app.route('/update2/<id>', methods=['POST'])
+def sql_update_imagen(id):
+    if request.method == 'POST':
+         nombre = request.form['nombre']
+         descripcion =request.form['descripcion']
+         privacidad =request.form['privacidad']
+         query = "UPDATE Imagen SET Nombre_imagen='"+nombre+"',Descripcion='"+descripcion+"', Privada='"+privacidad+"' WHERE Id_imagen="+id+";"
+         try:
+             con = sql_connection()
+             cursorObj = con.cursor()
+             cursorObj.execute(query)
+             con.commit()
+             con.close()
+             flash('se ha modificado la imagen satisfactoriamente')
+             return redirect('/perfil')
+         except Error:
+            print(Error)
+    else:
+        return "Error"
+
+
+
+@app.route("/eliminar/<string:id>")
+def eliminar(id):
+    query = "DELETE FROM Imagen WHERE Id_imagen="+id+";"
+    try:
+        con = sql_connection()
+        cursorObj = con.cursor()
+        cursorObj.execute(query)
+        con.commit()
+        con.close()
+        flash (' Imagen eliminada satisfactoriamente')
+        return redirect('/perfil')
+    except Error:
+        print(Error)
+    
 
 @app.route('/buscar/<string:busqueda>/', methods=('GET', 'POST'))
 def buscar(busqueda):
@@ -402,8 +445,8 @@ def sql_select_imagenes():
     except Error:
         print(Error)
 
-def sql_update_imagen(id,nombre,privada):
-    query = "UPDATE Imagen SET Nombre_imagen='"+nombre+"', privada="+privada+" WHERE Id_imagen="+id+";"
+def sql_update_imagen(id,nombre,descripcion):
+    query = "UPDATE Imagen SET Nombre_imagen='"+nombre+"',Descripcion="+descripcion+" WHERE Id_imagen="+id+";"
     try:
         con = sql_connection()
         cursorObj = con.cursor()

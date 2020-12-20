@@ -1,70 +1,48 @@
-﻿<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>Contact V10</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="static/css/Modificar.css">
-    <!--===============================================================================================-->
-    <style type="text/css">
-        img {
-            width: 300px;
-            height: 225px;
-            margin: 2px;
-        }
-    </style>
-</head>
-<body>
-    <div id="div1">
-        <span id="a">
-            <input type="text" name="busqueda" placeholder=" búsqueda de imagen" />
-            <button type="button">Buscar</button>
-        </span>
-    </div>
+﻿{% extends "layout.html" %}
+{% block body %}
+   
+    {% with messages = get_flashed_messages()  %}
+    {% if messages %}
+    {% for message in messages %}
+  <p>{{message}}</p>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+        
+          
+    <div class="row">
+        <div class="col-md-4 offset-md-4">
+            <div class="card card-body">
+            <div class="form-group">
 
-    <div class="container-contact100">
-        <div class="wrap-contact100">
-            <form class="contact100-form validate-form" method="POST" name="formulario modificar">
-                <span class="contact100-form-title">
-                    Modificar imagen
-                </span>
-                <img src="{{ url_for('static', filename='img/image (6).jpg') }}">
-
-                <div class="wrap-input100 validate-input">
-                    <input class="input100" type="text" name="nombre de la imagen" placeholder="Nombre de la imagen">
-                    <span class="focus-input100"></span>
+                <h1>Modificar imagen</h1>
+            </div> 
+              
+                     
+                    <form action ="/update2/{{contact.0}}" method="POST" name="formulario modificar"  >
+                        <div class="form-group">
+                            Nombre:<br>
+                   
+                            <input type="text" name="nombre" value="{{contact.2}}" required>
+                          </div>
+                          <div class="form-group">
+                            Descripción :<br>
+                            <input type="text" name="descripcion" value="{{contact.3}}" required>
+                          </div>
+                          <div class="form-group">
+                            Privacidad :<br>
+                            <label>  <input type="radio" name="privacidad" value="False" checked="checked" > Pública</label><br>
+                            <label> <input type="radio" name="privacidad" value="True" > Privada</label><br>
+                         <br>
+                          </div>
+                          <div class="form-group">
+                            <button type="submit" class="btn btn-primary btn-block">
+                              Modificar
+                            </button>
+                          </div>
+                    </form>
                 </div>
-
-                <div class="wrap-input100 validate-input" data-validate="Please enter your message">
-                    <textarea class="input100" name="message" placeholder="Descripción de la imagen"></textarea>
-                    <span class="focus-input100"></span>
-                </div>
-                <p>
-
-                    Privacidad:<br>
-
-                    <input type="radio" name="Privacidad" value="publica"> Pública<br>
-
-
-                    <input type="radio" name="Privacidad" value="Privada"> Privada<br>
-
-                </p>
-                <div class="container-contact100-form-btn">
-                    <button class="contact100-form-btn">
-                        <span>
-                            <i class="fa fa-paper-plane-o m-r-6" aria-hidden="true"></i>
-                            Modificar
-                        </span>
-                    </button>
-                    <button class="contact100-form-btn">
-                        <span>
-                            <i class="fa fa-paper-plane-o m-r-6" aria-hidden="true"></i>
-                            Borrar
-                        </span>
-                    </button>
-
-                </div>
-            </form>
-        </div>
-    </div>
+            </div>
+          </div>
+        
+{% endblock %}

@@ -1,87 +1,38 @@
-﻿<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>Crear imagen</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+﻿{% extends "layout.html" %}
+{% block body %}
+<div class="row">
+    <div class="col-md-6 offset-md-3">
+      <div class="card card-body">
 
-    <!--===============================================================================================-->
+        <div class="form-group">
 
-    <link rel="stylesheet" type="text/css" href="static/css/Modificar.css">
-    <!--===============================================================================================-->
-</head>
+            <h1>Crear imagen</h1>
+        </div> 
+         
+        <form action="{{ url_for('crear')}}" method="POST" name="formulario subir" enctype="multipart/form-data">
 
-<body>
-    <div id="div1">
-        <span id="a">
-            <input type="text" name="busqueda" placeholder=" búsqueda de imagen" />
-            <button type="button">Buscar</button>
-        </span>
-    </div>
-
-        
-            <div class="container-contact100">
-                <div class="wrap-contact100">
-        
-                    <span class="contact100-form-title">
-                        Crear nueva Imagen
-                    </span>
-                     
-                    <form action="{{ url_for('crear')}}" method="POST" name="formulario subir" enctype="multipart/form-data">
-        
-                        {{ form_subir.hidden_tag() }}
-        
-                        {{ form_subir.nombre.label }}
-                        {{ form_subir.nombre }}
-                        <br>
-                        <br>
-                        {{ form_subir.descripcion.label }}
-                        {{ form_subir.descripcion }}
-                        <br>
-                        <br>
-                        {{ form_subir.privacidad.label }}
-                        {{ form_subir.privacidad }}
-                        <br>    
-                        <br>
-                        {{ form_subir.enviar }}
-
-                        <input type="file" name="archivo">
-                        <input type="submit">
-                           
-                    </form>
-                    <!--
-                        <form action="/upload" method="POST" name="subir" enctype="multipart/form-data">
-                        
-                            <input type="file" name="archivo">
-                            <input type="submit">
-                        </form> -->
-
-                     
-
-                       
-        
-                        <!--<div class="wrap-input100 validate-input" data-validate="Por favor pongale un titulo a la imagen.">
-                            <input class="input100" type="text" name="nombre" placeholder="Nombre de la imagen">
-                            <span class="focus-input100"></span>
-                        </div>
-        
-                        <div class="wrap-input100 validate-input" data-validate="Por favor pongale una descripción a la imagesn">
-                            <textarea class="input100" name="descripcion" placeholder="Descripción de la imagen"></textarea>
-                            <span class="focus-input100"></span>
-                        </div>
-                        <p>
-                            Privacidad:<br>
-                            <input type="radio" name="Privacidad" value="publica"> Pública<br>
-                            <input type="radio" name="Privacidad" value="Privada"> Privada<br>
-                        </p>
-        
-                        <div class="container-contact100-form-btn">
-                            <input type="file"
-                                    id="avatar" name="avatar"
-                                    accept="image/png, image/jpeg">
-                        </div>-->
-        
-                </div>
+            {{ form_subir.hidden_tag() }}
+            <div class="form-group">
+            {{ form_subir.nombre.label }}
+            {{ form_subir.nombre }}
+            </div> 
+            <div class="form-group">
+            {{ form_subir.descripcion.label }}
+            {{ form_subir.descripcion }}
+            </div> 
+            <div class="form-group">
+            {{ form_subir.privacidad.label }}
+            {{ form_subir.privacidad }}
+            </div>    
+            <br>
+            <div class="form-group">
+            <input type="file" name="archivo">
             </div>
-</body>
-</html>
+            <input type="submit"class="btn btn-primary ">
+               
+        </form>
+    </div>
+</div>
+</div>
+</div>
+{% endblock %}

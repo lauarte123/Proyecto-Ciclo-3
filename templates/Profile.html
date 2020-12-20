@@ -13,9 +13,13 @@
         <link rel="preconnect" href="https://fonts.gstatic.com">
         <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&family=Orienta&display=swap" rel="stylesheet">
         <link rel="preconnect" href="https://fonts.gstatic.com">
+       
         <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&family=Orienta&display=swap" rel="stylesheet">
     </head>
     <body>
+        <nav class="navbar navbar-dark bg-dark">
+            <a class="navbar-brand" href="/">POLAROID</a>
+          </nav>
 
         {% with messages = get_flashed_messages() %}
             {% if messages %}
@@ -33,12 +37,12 @@
             <span class="search-bar">
                 <form action="{{ url_for('ver') }}"  method="POST">
                     <input type="text" name="busqueda" placeholder="Realiza tu búsqueda"/>
-                    <button type="submit">Buscar</button>
+                    <button type="submit"class="btn btn-secondary"> Buscar</button>
                 </form>
             </span>
 
             <form action="{{ url_for('logout') }}">
-                <button type="logout">Cerrar Sesión</button>
+                <button type="logout" class="btn btn-secondary">Cerrar Sesión</button>
             </form>
             
         </div>
@@ -69,7 +73,7 @@
             <h3>Mis Imágenes</h3>
             <div class="botones">
                 <form action="{{ url_for('crear') }}">
-                    <button type="submit">Agregar Imagen</button>
+                    <button type="submit" class="btn btn-secondary" >Agregar Imagen</button>
                 </form>
 
                 <!--
@@ -80,25 +84,35 @@
             <section class="galeria">
                 <!-- #image# es el target para animarlas -->
                 {% for file8 in este %}
-                <a href="#{{ file8 }}">
-                  <img src="{{ url_for('upload', filename=file8) }}" style="width: 350px"">
-                  <form action="{{ url_for('modificar') }}">
-                    <button type="submit">Modificar Imagen</button>
-                </form>
-                <form>
-                    <button type="submit">Borrar Imagen</button>
-                     </form>
+                <a href="#{{ file8.5 }}">
+                  <img src="{{ url_for('upload', filename=file8.5) }}" style="width: 350px"">
                 </a>
-              
-                {% endfor %}
+        
+            <ul>
+            <li><a href="/modificar/{{file8.0}}"class="btn btn-secondary" >Modificar</a></li>
+            <li> <a href="/eliminar/{{file8.0}}"class="btn btn-danger btn-delete" >Borrar</a> </li>
+            </ul>
+            {% endfor %}
+           
+
+                
     
             </section>
             
             {% for file8 in este %}
-            <article class="light-box" id="{{ file8 }}">  
-                <img src="{{ url_for('upload', filename=file8) }}"style="width: 450px"">
+            <article class="light-box" id="{{ file8.5 }}">  
+                <img src="{{ url_for('upload', filename=file8.5) }}"style="width: 450px"">
                 <a href="#" class="close">X</a>
-                <a href= '{{ "/uploads/" ~ file8 }}' download> Descargar </a>
+                <ul>
+                <li><a href= "/uploads/{{file8.5 }}" download> Descargar </a></li>
+            
+
+                </ul>
+               
+
+
+               
+                
                
             </article>
             {% endfor %}
@@ -188,7 +202,7 @@
   
     </div>
   </div>
-
+  <script src="{{url_for('static', filename='js/main.js')}}"></script>
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
         <script src="https://kit.fontawesome.com/3730109e88.js" crossorigin="anonymous"></script>
