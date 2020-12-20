@@ -3,6 +3,7 @@
         <title>search</title>
         <meta charset="utf-8" />
         <link rel="stylesheet" href="{{ url_for('static', filename='css/search_style.css')}}">
+        <link rel="stylesheet" href="https://bootswatch.com/4/materia/bootstrap.min.css">
         <link rel="preconnect" href="https://fonts.gstatic.com">
         <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&family=Orienta&display=swap" rel="stylesheet">
     </head>
@@ -50,7 +51,7 @@
         <article class="light-box" id="{{ file }}">  
             <img src="{{ url_for('upload', filename=file) }}">
             <a href="#" class="close">X</a>
-            <a href= '{{ "/uploads/" ~ file }}' download> Descargar </a>
+            <a href= '{{ "/uploads/" ~ file }}' download class="btn btn-secondary" > Descargar </a>
         </article>
         {% endfor %}
 
