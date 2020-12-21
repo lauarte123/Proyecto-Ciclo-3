@@ -35,7 +35,7 @@ def principal():
     form2 = FormContraseña()
     form3 = FormInicio()
     if g.user:
-        return redirect( url_for( 'perfil' ) )
+        return redirect( url_for( 'portada' ) )
     return render_template('Cover.html', form_registro=form1, form_contraseña=form2, form_inicio=form3)
 
 #Activación de cuenta
@@ -101,7 +101,7 @@ def login():
         form2 = FormContraseña()
         form3 = FormInicio()
         if g.user:
-            return redirect(url_for('perfil'))
+            return redirect(url_for('portada'))
         if request.method == 'POST':
             db = get_db()
             
@@ -118,7 +118,7 @@ def login():
                 if check_password_hash(user['Contraseña'], contraseña):
                     session.clear()
                     session['usuario'] = user[0]
-                    resp = make_response(redirect( url_for('perfil') ))
+                    resp = make_response(redirect( url_for('portada') ))
                     resp.set_cookie('usuario', usuario)
                     return resp
             flash(error)
@@ -127,7 +127,11 @@ def login():
         print(Error)
         return('Error')
         # return render_template('Cover.html', form_registro=form1, form_contraseña=form2, form_inicio=form3)
-
+@app.route("/portada", methods=('GET', 'POST'))
+@login_required
+def portada():
+    usuario = request.cookies.get('usuario')
+    return render_template('portada.html')
 
 @app.route("/perfil", methods=('GET', 'POST'))
 @login_required
@@ -141,9 +145,10 @@ def perfil():
     if g.user:
         nombre = g.user['Nombres']
         correo = g.user['Correo']
-        return render_template('Profile.html', este=imagenes, nombre=nombre, correo=correo, form_actualizar_usuario=form1, form_eliminar_usuario=form2)
+        cantidad = len(imagenes)
+        return render_template('Profile.html', cantidad=cantidad, este=imagenes, nombre=nombre, correo=correo, form_actualizar_usuario=form1, form_eliminar_usuario=form2)
 
-    return render_template('Profile.html', este=imagenes, idimagen=id_imagenes, nombre=nombre, correo=correo, form_actualizar_usuario=form1, form_eliminar_usuario=form2)
+    return render_template('Profile.html', cantidad=cantidad, este=imagenes, idimagen=id_imagenes, nombre=nombre, correo=correo, form_actualizar_usuario=form1, form_eliminar_usuario=form2)
 
 
 @app.route("/actualizarInformacion", methods=('GET', 'POST'))
@@ -185,20 +190,25 @@ def actualizarInformacion():
 def eliminar_usuario():
     form = FormEliminarUsuario()
     if form.validate_on_submit():
-        usuario = form.usuario.data
-        contraseña = form.contraseña.data
+        db = get_db()
 
-        listaUsuario = sql_select_usuarios()
-        tamañoLista=len(listaUsuario)
-        for i in range (tamañoLista):
-            if usuario == listaUsuario[i][0] and contraseña == listaUsuario[i][4]:
-                sql_delete_usuarios(usuario)
-                # mensaje = 'Su información de ha sido actualizada correctamente'
-                # flash(mensaje)
-                return redirect('/')
-            else:
-                continue
+        usuario = request.cookies.get('usuario')
+        contraseña = form.contraseña.data
+        user = db.execute('SELECT * FROM Usuario WHERE Usuario = ?', (usuario, )).fetchone()
+        if check_password_hash(user['Contraseña'], contraseña):
+            deleted_user = db.execute('DELETE FROM Usuario WHERE Usuario=?', (usuario, ))
+            db.commit()
+            mensaje = 'Su usuario ha sido borrado definitivamente'
+            flash(mensaje)
+            session.clear()
+            return redirect('/')
+        else: 
+            mensaje = 'Contraseña incorrecta, intentelo nuevamente'
+            flash(mensaje)
+            return redirect('/perfil')
+
     return redirect('/perfil')
+    
 
 # ### Visualizar imágenes y rutas guardadas en Archivos
 # @app.route('/verArchivos/')
@@ -434,7 +444,7 @@ def sql_select_imagen(id):
         print(Error)
 
 def sql_select_imagenes():
-    query = "SELECT * FROM Imagen;"
+    query = "SELECT * FROM Imagen WHERE Privada = 'False';"
     try:
         con = sql_connection()
         cursorObj = con.cursor()
@@ -504,3 +514,4 @@ def downloadimage():
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=443, ssl_context=('micertificado.pem','llaveprivada.pem'), debug=True)
+

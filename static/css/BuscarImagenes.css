@@ -1,3 +1,8 @@
 .content{
     font-size: larger;
 }
+
+div.contenedor{
+    display: flex;
+    align-items: center;
+}

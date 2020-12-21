@@ -59,23 +59,20 @@ h5{
 .profile button{
     background: black;
     color: white;
-    border-radius: 20px;
-    font-size: 30px;
-    margin: 0 5px 0 700px;
+    border-radius: 10px;
+    font-size: 52px;
+    margin-left: 10px;
     object-fit: cover;
     
 }
 
 .upload button{
-    background: #2ecc71;
-    color: #232323;
-    border-radius: 8px;
-    font-size: 16px;
-    text-align: center;
-    width: 150px;
-    height: 35px;
-    font-family: 'Orienta', sans-serif;
-    border-color: transparent;
+    background: black;
+    color: white;
+    border-radius: 10px;
+    font-size: 52px;
+    margin-left: 10px;
+    object-fit: cover;
 }
 
 .galeria{
