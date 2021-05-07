@@ -60,7 +60,7 @@ def registro():
             db.execute('INSERT INTO Usuario (Usuario, Nombres, Apellidos, Correo, Contraseña) values(?,?,?,?,?)', (usuario, nombres, apellidos, email, hash_contraseña))
             db.commit()
 
-            yag = yagmail.SMTP('laarteaga@uninorte.edu.co','13uninorte31')
+            yag = yagmail.SMTP('team.info.polaroid@gmail.com','infopolaroid')
             yag.send(to=email, subject="Activa tu cuenta en Polaroid", contents="Bienvenido, usa el siguiente link para activar tu cuenta")
             return redirect('/')
         return render_template('Cover.html', form_registro=form1, form_contraseña=form2, form_inicio=form3)
@@ -85,7 +85,7 @@ def nuevaContraseña():
             error = "Usuario inválido"
         else:
             correo = user['Correo']
-            yag = yagmail.SMTP('laarteaga@uninorte.edu.co','13uninorte31')
+            yag = yagmail.SMTP('team.info.polaroid@gmail.com','infopolaroid')
             yag.send(to=str(correo), subject="POLAROID: Recuperación de contraseña", contents="Hola, haz clic en el siguiente enlace para recuperar tu contraseña")
             return redirect('/')
         
@@ -512,6 +512,8 @@ def downloadimage():
 #if __name__ == "__main__":
 #    app.run(host='0.0.0.0', port=80, debug=True)
 
-if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=443, ssl_context=('micertificado.pem','llaveprivada.pem'), debug=True)
+# if __name__ == "__main__":
+#     app.run(host='0.0.0.0', port=443, ssl_context=('micertificado.pem','llaveprivada.pem'), debug=True)
 
+if __name__ == "__main__":
+    app.run(debug=True)
