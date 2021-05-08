@@ -29,6 +29,11 @@ def login_required(view):
         return view(*args, **kwds)
     return wrapped_view
 
+@app.route('/refact1')
+def refact1():
+    return render_template('Cover2.html')
+    
+
 @app.route('/')
 def principal():
     form1 = FormRegistro()

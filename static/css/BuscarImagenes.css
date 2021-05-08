@@ -1,8 +1,19 @@
-.content{
-    font-size: larger;
+.content {
+  font-size: larger;
 }
 
-div.contenedor{
-    display: flex;
-    align-items: center;
+.hero-area {
+  background-image: url("/static/img/bg1.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  width: 100%;
+  height: 100%;
 }
+
+.contenedor {
+  /* max-width: 1200px; */
+  /* padding: 24px; */
+  margin: 0 auto;
+}
+
