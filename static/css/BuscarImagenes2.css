@@ -64,8 +64,15 @@ nav {
     line-height: 3rem;
     margin-right: var(--letf-margin);
 }
+
+.grid-container {
+    display: grid;
+    grid-template-columns: 70% 30%;
+}
+
 .container {
     padding-left: var(--letf-margin);
+    padding-right: var(--letf-margin);
 }
 
 .main-heading {

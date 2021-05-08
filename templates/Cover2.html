@@ -27,16 +27,36 @@
                 </nav>
             </header>
             <main>
-                <div class="container">
-                    <div class="heading">
-                        <h1 class="main-heading">Save the moment.</h1>
-                        <p class="text-heading">Welcome to Polaroid, <br> 
-                            <i>the brand new source</i> <br> 
-                            of free images.
-                        </p>
-                        <button class="btn-start">
-                            <p class="text-start">Start</p> 
-                        </button>
+                <div class="grid-container">
+                    <div class="container">
+                        <div class="heading">
+                            <h1 class="main-heading">Save the moment.</h1>
+                            <p class="text-heading">Welcome to Polaroid, <br> 
+                                <i>the brand new source</i> <br> 
+                                of free images.
+                            </p>
+                            <button onclick="togglePopup()" class="btn-start">
+                                <p class="text-start">Start</p> 
+                            </button>
+                        </div>
+                    </div>
+                    <div class="login-form" id="popup-1">
+                        <div class="close-btn">X</div>
+                        <div class="login-content">
+                            <h2 class="login-title">Login</h2>
+                            <label for="user">User</label>
+                            <input type="text" name="user" id="user">
+                            <label for="password">Password</label>
+                            <input type="password" name="password" id="password">
+                            <p>Forgot your password?</p>
+                            <button class="login-btn">
+                                <p>Login</p>
+                            </button>
+                            <div class="or">OR</div>
+                            <button class="join-btn">
+                                <p>Join</p>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </main>
@@ -45,6 +65,10 @@
             </footer>
         
     </div>
-    
+    <script>
+        function togglePopup () {
+            document.getElementById("popup-1").classList.toggle("active");
+        }
+    </script>
 </body>
 </html>

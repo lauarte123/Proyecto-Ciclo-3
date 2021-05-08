@@ -49,7 +49,7 @@
         <form action="{{ url_for('login') }}" method="POST" class="formulario" name="formulario_ingreso">
           
           {{ form_inicio.hidden_tag() }} 
-          {{ form_inicio.usuario.label(class="col-form-label") }} 
+          {{ form_inicio.usuario.label(class="usuario") }} 
           {{ form_inicio.usuario(class="form-control") }} 
           {{ form_inicio.contraseña.label(class="col-form-label") }} 
           {{ form_inicio.contraseña(class="form-control") }} 
