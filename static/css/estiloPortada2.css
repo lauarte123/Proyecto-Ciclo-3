@@ -1,0 +1,98 @@
+@import url('https://fonts.googleapis.com/css2?family=Catamaran:wght@300;400;500;600;700;800&family=Lato:wght@300;400;700&display=swap');
+
+
+* {
+    border: 1px solid black;
+}
+
+/* HEADER -----------------------------------------------------------------------------------------*/ 
+
+header {
+    background-color: white;
+    height: 3rem;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+}
+
+.logo-container {
+    margin-left: 24px;
+}
+
+.icon-logo {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+}
+
+.logo {
+    text-decoration: none;
+    color: black;
+    font-family: 'Catamaran', sans-serif;
+    font-weight: 700;
+    font-size: 1.5rem;
+    line-height: 3rem;
+}
+
+/* .about-anchor {
+    text-decoration: none;
+    color: black;
+    font-family: 'Catamaran', sans-serif;
+    font-weight: 600;
+    font-size: 1.5rem;
+    line-height: 3rem;
+    margin-right: 24px;
+} */
+
+.search-form {
+    display: flex;
+    align-items: center;
+}
+
+.search-btn {
+    font-family: 'Catamaran', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-right: 24px;
+    text-align: center;
+
+    border-radius: 16px;
+    padding: 5px 8px 5px 8px;
+    border: 1px solid rgb(0, 0, 0);
+    background: none;
+}
+
+.search-input {
+    
+    font-family: 'Catamaran', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 300;
+    margin-right: 24px;
+    text-align: center;
+
+
+    background: transparent;
+    border: none;
+    outline: none;
+    border-bottom: 1px solid rgb(0, 0, 0);
+}
+
+
+
+/* FOOTER -------------------------------------------------------------------------------------------*/
+
+footer {
+    background-color: white;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+}
+
+.text-footer {
+    font-family: 'Lato', sans-serif;
+    font-weight: 400;
+    margin-left: var(--letf-margin);
+}

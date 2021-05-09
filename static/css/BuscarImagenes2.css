@@ -13,22 +13,11 @@
     height: 100vh;
 }
 
-/* * {
-    border: 1px solid black;
-} */
-
-/* .container {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-} */
-
+/* HEADER -----------------------------------------------------------------------------------------*/
 
 header {
     background-color: white;
     height: 3rem;
-    /* background: rgb(240,240,240); */
-    /* background: linear-gradient(180deg, rgba(240,240,240,1) 11%, rgba(255,255,255,1) 100%); */
 }
 
 nav {

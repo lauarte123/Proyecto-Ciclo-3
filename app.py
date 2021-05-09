@@ -32,7 +32,10 @@ def login_required(view):
 @app.route('/refact1')
 def refact1():
     return render_template('Cover2.html')
-    
+
+@app.route('/refact2')
+def refact2():
+    return render_template('portada2.html')    
 
 @app.route('/')
 def principal():
