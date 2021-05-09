@@ -11,7 +11,7 @@ import sqlite3
 from sqlite3 import Error
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
-
+from livereload import Server
 
 app = Flask(__name__)
 app.secret_key = "D*G-KaPdSgVkYp3s5v8y/B?E(H+MbQeT"
@@ -525,3 +525,5 @@ def downloadimage():
 
 if __name__ == "__main__":
     app.run(debug=True)
+    server = Server(app.wsgi_app)
+    server.serve()

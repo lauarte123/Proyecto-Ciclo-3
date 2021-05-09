@@ -25,7 +25,6 @@ nav {
     display: inline-block;
     width: 24px;
     height: 24px;
-    z-index: 2;
 }
 
 .logo {
@@ -60,7 +59,7 @@ nav {
     text-align: center;
 
     border-radius: 16px;
-    padding: 5px 8px 5px 8px;
+    padding: 5px 15px 5px 15px;
     border: 1px solid white;
     background: none;
     color: white;
@@ -96,22 +95,79 @@ nav {
     border: 1px solid black;
 } */
 
-.home-title-welcome, .home-title-username {
+
+
+.home-title-welcome {
     font-family: 'Catamaran', sans-serif;
     font-weight: 500;
-    font-size: 50px;
-}
-
-.home-title-username {
-    text-align: right;
+    font-size: 48px;
+    margin: 80px 0 10px 0;
+    text-align: center;
 }
 
 .home-title-ask {
     font-family: 'Lato', sans-serif;
     font-weight: 300;
-    font-size: 32px;
+    font-size: 24px;
+    margin-bottom: 60px;
+    text-align: center;
 }
 
+.home-options, .option {
+    position: relative;
+}
+
+.home-options {
+    display: flex;
+    justify-content: center;
+    column-gap: 20px;
+}
+
+.option {
+    width: 20%;
+    height: 225px;
+    border: 1px solid rgba(202, 201, 201, 0.849);
+}
+
+.option img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.option a:visited {
+    color: black;
+    background-color: transparent;
+    text-decoration: none;
+}
+
+.overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background:rgba(145, 30, 173, 0.356) ;
+    width: 100%;
+    height: 0;
+    overflow: hidden;
+    transition: .5s ease;
+}
+
+.overlay h2{
+    font-family: 'Lato', sans-serif;
+    font-weight: 400;
+    font-size: 32px;
+    color: white;
+    position: absolute;
+    top: 50%;
+    left:50%;
+    text-align: center;
+    transform: translate(-50%, -50%);
+}
+
+.option:hover .overlay{
+    height:100%;
+    cursor: pointer;
+}
 
 
 
