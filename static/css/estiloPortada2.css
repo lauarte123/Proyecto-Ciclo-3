@@ -1,15 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Catamaran:wght@300;400;500;600;700;800&family=Lato:wght@300;400;700&display=swap');
 
 
-* {
+/* * {
     border: 1px solid black;
-}
+} */
 
 /* HEADER -----------------------------------------------------------------------------------------*/ 
 
 header {
-    background-color: white;
+    background-color: rgb(17, 17, 17);
     height: 3rem;
+    z-index: 1;
 }
 
 nav {
@@ -25,11 +26,12 @@ nav {
     display: inline-block;
     width: 24px;
     height: 24px;
+    z-index: 2;
 }
 
 .logo {
     text-decoration: none;
-    color: black;
+    color: white;
     font-family: 'Catamaran', sans-serif;
     font-weight: 700;
     font-size: 1.5rem;
@@ -60,8 +62,9 @@ nav {
 
     border-radius: 16px;
     padding: 5px 8px 5px 8px;
-    border: 1px solid rgb(0, 0, 0);
+    border: 1px solid white;
     background: none;
+    color: white;
 }
 
 .search-input {
@@ -75,8 +78,10 @@ nav {
 
     background: transparent;
     border: none;
+    border-bottom: 1px solid white;
     outline: none;
-    border-bottom: 1px solid rgb(0, 0, 0);
+    /* border-bottom: 1px solid rgb(0, 0, 0); */
+    color: white;
 }
 
 
@@ -84,7 +89,7 @@ nav {
 /* FOOTER -------------------------------------------------------------------------------------------*/
 
 footer {
-    background-color: white;
+    background-color: rgb(17, 17, 17);
     position: fixed;
     left: 0;
     bottom: 0;
@@ -95,4 +100,5 @@ footer {
     font-family: 'Lato', sans-serif;
     font-weight: 400;
     margin-left: var(--letf-margin);
+    color: white;
 }
