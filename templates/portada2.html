@@ -11,6 +11,7 @@
 
 <body>
     <header>
+        {% block header %}
         <nav>
             <div class="logo-container">
                 <div class="icon-logo">
@@ -23,7 +24,9 @@
                     <button class="search-btn" type="submit">Search</button>
                 </form>
         </nav>
+        {% endblock %}
     </header>
+
     <main>
         <div class="home-container">
             <div class="home-content">
