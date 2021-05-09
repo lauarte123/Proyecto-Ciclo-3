@@ -18,17 +18,55 @@
                 </div>
                 <a class="logo" href="#">Polaroid</a> 
             </div>
-            <!-- <span class="search-span"> -->
                 <form class="form-inline search-form" action="{{ url_for('ver') }}"  method="POST">
                     <input class="form-control search-input" type="search" placeholder="Search free photos" aria-label="Search" name="busqueda">
                     <button class="search-btn" type="submit">Search</button>
                 </form>
-            <!-- </span> -->
-            <!-- <a class="about-anchor" href="#">About</a> -->
         </nav>
     </header>
     <main>
-
+        <div class="home-container">
+            <div class="home-content">
+                <div class="home-title">
+                    <div class="home-title-welcome"> 
+                        Welcome back, 
+                    </div>
+                    <div class="home-title-username">
+                        Fernando
+                    </div>
+                    <div class="home-title-ask">
+                        What would you like to do?
+                    </div>
+                </div>
+                
+                <div class="home-options">
+                    <div class="option">
+                        <img src="" alt="home-option">
+                        <div class="overlay">
+                            <h2>Profile</h2>
+                        </div>
+                    </div>
+                    <div class="option">
+                        <img src="" alt="home-option">
+                        <div class="overlay">
+                            <h2>Upload</h2>
+                        </div>
+                    </div>
+                    <div class="option">
+                        <img src="" alt="home-option">
+                        <div class="overlay">
+                            <h2>Help</h2>
+                        </div>
+                    </div>
+                    <div class="option">
+                        <img src="" alt="home-option">
+                        <div class="overlay">
+                            <h2>Logout</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
     <footer>
         <p class="text-footer">Powered by feeldiac</p>

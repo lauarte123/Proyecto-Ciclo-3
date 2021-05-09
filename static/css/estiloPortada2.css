@@ -10,7 +10,6 @@
 header {
     background-color: rgb(17, 17, 17);
     height: 3rem;
-    z-index: 1;
 }
 
 nav {
@@ -84,6 +83,37 @@ nav {
     color: white;
 }
 
+.home-container {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* .home-content * {
+    border: 1px solid black;
+} */
+
+.home-title-welcome, .home-title-username {
+    font-family: 'Catamaran', sans-serif;
+    font-weight: 500;
+    font-size: 50px;
+}
+
+.home-title-username {
+    text-align: right;
+}
+
+.home-title-ask {
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    font-size: 32px;
+}
+
+
+
 
 
 /* FOOTER -------------------------------------------------------------------------------------------*/
@@ -99,6 +129,6 @@ footer {
 .text-footer {
     font-family: 'Lato', sans-serif;
     font-weight: 400;
-    margin-left: var(--letf-margin);
+    margin-left: 24px;
     color: white;
 }
